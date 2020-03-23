@@ -1,20 +1,21 @@
-# import the necessary packages
-from PIL import Image
-import pytesseract
 import cv2
 import os
 
 from parseArguments import parseArguments
 from preprocessImage import preprocessImage
+from TextRecognizer import TextRecognizer
 
 args = parseArguments();
 
 # create filename for temporary file
 tempFilename = "{}.png".format(os.getpid())
 
+# preprocess image
 preprocessResult = preprocessImage(args['image'], args['preprocess'], tempFilename)
 
-text = pytesseract.image_to_string(Image.open(tempFilename), lang="eng+frk")
+# recognize content
+recognizer = TextRecognizer(tempFilename)
+text = recognizer.getText()
 
 # delete the temporary file
 os.remove(tempFilename)
