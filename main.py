@@ -7,14 +7,18 @@ from TextRecognizer import TextRecognizer
 
 args = parseArguments();
 
+originalImagePath = args['image']
+preprocessMode = args['preprocess']
+language = args['lang']
+
 # create filename for temporary file
 tempFilename = "{}.png".format(os.getpid())
 
 # preprocess image
-preprocessResult = preprocessImage(args['image'], args['preprocess'], tempFilename)
+preprocessResult = preprocessImage(originalImagePath, preprocessMode, tempFilename)
 
 # recognize content
-recognizer = TextRecognizer(tempFilename)
+recognizer = TextRecognizer(tempFilename, language)
 text = recognizer.getText()
 
 # delete the temporary file
