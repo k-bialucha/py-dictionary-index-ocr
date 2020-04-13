@@ -1,11 +1,14 @@
-import cv2
+'''
+App's main module.
+'''
 import os
+import cv2
 
 from parseArguments import parseArguments
 from preprocessImage import preprocessImage
-from TextRecognizer import TextRecognizer
+from text_recognizer import TextRecognizer
 
-args = parseArguments();
+args = parseArguments()
 
 originalImagePath = args['image']
 preprocessMode = args['preprocess']
@@ -15,11 +18,12 @@ language = args['lang']
 tempFilename = "{}.png".format(os.getpid())
 
 # preprocess image
-preprocessResult = preprocessImage(originalImagePath, preprocessMode, tempFilename)
+preprocessResult = preprocessImage(
+    originalImagePath, preprocessMode, tempFilename)
 
 # recognize content
 recognizer = TextRecognizer(tempFilename, language)
-text = recognizer.getText()
+text = recognizer.get_text()
 
 # delete the temporary file
 os.remove(tempFilename)
