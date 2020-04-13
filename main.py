@@ -4,11 +4,11 @@ App's main module.
 import os
 import cv2
 
-from parseArguments import parseArguments
-from preprocessImage import preprocessImage
+from parse_arguments import parse_arguments
+from preprocess_image import preprocess_image
 from text_recognizer import TextRecognizer
 
-args = parseArguments()
+args = parse_arguments()
 
 originalImagePath = args['image']
 preprocessMode = args['preprocess']
@@ -18,7 +18,7 @@ language = args['lang']
 tempFilename = "{}.png".format(os.getpid())
 
 # preprocess image
-preprocessResult = preprocessImage(
+preprocessResult = preprocess_image(
     originalImagePath, preprocessMode, tempFilename)
 
 # recognize content
