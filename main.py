@@ -8,29 +8,38 @@ from parse_arguments import parse_arguments
 from preprocess_image import preprocess_image
 from text_recognizer import TextRecognizer
 
-args = parse_arguments()
 
-originalImagePath = args['image']
-preprocessMode = args['preprocess']
-language = args['lang']
+def main():
+    '''
+    Execute full recognition process
+    '''
+    args = parse_arguments()
 
-# create filename for temporary file
-tempFilename = "{}.png".format(os.getpid())
+    original_image_path = args['image']
+    preprocess_mode = args['preprocess']
+    language = args['lang']
 
-# preprocess image
-preprocessResult = preprocess_image(
-    originalImagePath, preprocessMode, tempFilename)
+    # create filename for temporary file
+    temp_filename = "{}.png".format(os.getpid())
 
-# recognize content
-recognizer = TextRecognizer(tempFilename, language)
-text = recognizer.get_text()
+    # preprocess image
+    preprocess_result = preprocess_image(
+        original_image_path, preprocess_mode, temp_filename)
 
-# delete the temporary file
-os.remove(tempFilename)
+    # recognize content
+    recognizer = TextRecognizer(temp_filename, language)
+    text = recognizer.get_text()
 
-print(text)
+    # delete the temporary file
+    os.remove(temp_filename)
 
-# show the output images
-cv2.imshow("Image", preprocessResult[0])
-cv2.imshow("Output", preprocessResult[1])
-cv2.waitKey(0)
+    print(text)
+
+    # show the output images
+    cv2.imshow("Image", preprocess_result[0])
+    cv2.imshow("Output", preprocess_result[1])
+    cv2.waitKey(0)
+
+
+if __name__ == "__main__":
+    main()
