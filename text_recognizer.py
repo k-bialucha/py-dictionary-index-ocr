@@ -26,3 +26,26 @@ class TextRecognizer:
         """
         text = pytesseract.image_to_string(self.image, lang=self.language)
         return text
+
+    def get_boxes(self):
+        """ Extracts boxes from image
+        needs more exploration
+
+        Returns:
+        object: some object of boxes
+
+        """
+        boxes = pytesseract.image_to_boxes(self.image, lang=self.language)
+        return boxes
+
+    def get_data(self):
+        """ Extracts data from image
+        needs more exploration
+
+        Returns:
+        object: pandas.DataFrame of Tesseract data
+
+        """
+        data = pytesseract.image_to_data(
+            self.image, lang=self.language, output_type="data.frame")
+        return data
