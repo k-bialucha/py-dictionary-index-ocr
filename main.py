@@ -28,13 +28,18 @@ def main():
 
     # recognize content
     recognizer = TextRecognizer(temp_filename, language)
-    text = recognizer.get_text()
+    data_frame = recognizer.get_data()
 
     # delete the temporary file
     os.remove(temp_filename)
 
-    print(text)
+    # log data
+    for i, row in data_frame.iterrows():
+        print("\"" + str(row["text"]) + "\": ", row["left"])
+    # TODO: add filename timestamp
+    data_frame.to_csv('data.csv')
 
+    # TODO: allow to disable image output
     # show the output images
     cv2.imshow("Image", preprocess_result[0])
     cv2.imshow("Output", preprocess_result[1])
