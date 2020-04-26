@@ -50,8 +50,22 @@ class TextRecognizer:
             self.image, lang=self.language, output_type="data.frame")
         return data
 
-    def get_first_words(self):
-        """ Extracts first word data for each line in image
+    def get_column_offset_boundaries(self, data_frame):
+        # filter in only words from 2 main blocks
+        top_blocks = data_frame.block_num.value_counts().nlargest(n=2)
+        top_block_1 = top_blocks.index[1]
+
+        top_block_1_df = data_frame[(data_frame.block_num ==
+                                     top_block_1)]
+
+        left_min = top_block_1_df["left"].min()
+        left_max = top_block_1_df["left"].max()
+        offset_breakpoint = left_min + (left_max - left_min) * 0.03
+
+        return (offset_breakpoint, top_block_1)
+
+    def get_offset_first_words(self):
+        """ Extracts first word data for each offset line in image
         uses get_data function
 
         Returns:
@@ -60,13 +74,9 @@ class TextRecognizer:
         """
         data_frame = self.get_data()
 
-        # filter in only words from 2 main blocks
-        top_rows = data_frame.block_num.value_counts().nlargest(n=2)
-        top_row_1 = top_rows.index[0]
-        top_row_2 = top_rows.index[1]
+        max_value, block_num = self.get_column_offset_boundaries(data_frame)
 
-        first_words_df = data_frame[data_frame.word_num == 1]
-        top_block_first_words_df = first_words_df[(first_words_df.block_num ==
-                                                   top_row_1) | (first_words_df.block_num == top_row_2)]
+        block_offset_words_df = data_frame[(data_frame.block_num == block_num) & (
+            data_frame.word_num == 1) & (max_value <= data_frame.left)]
 
-        return top_block_first_words_df
+        return block_offset_words_df
