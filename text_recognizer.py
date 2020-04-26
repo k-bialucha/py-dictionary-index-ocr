@@ -60,5 +60,13 @@ class TextRecognizer:
         """
         data_frame = self.get_data()
 
-        first_words = data_frame.query('word_num == 1')
-        return first_words
+        # filter in only words from 2 main blocks
+        top_rows = data_frame.block_num.value_counts().nlargest(n=2)
+        top_row_1 = top_rows.index[0]
+        top_row_2 = top_rows.index[1]
+
+        first_words_df = data_frame[data_frame.word_num == 1]
+        top_block_first_words_df = first_words_df[(first_words_df.block_num ==
+                                                   top_row_1) | (first_words_df.block_num == top_row_2)]
+
+        return top_block_first_words_df
