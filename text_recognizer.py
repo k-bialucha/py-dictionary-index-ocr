@@ -5,6 +5,14 @@ import pytesseract
 from PIL import Image
 
 
+def are_rows_matching(df, block_num, max_value):
+    block_matching = df.block_num == block_num
+    is_first_word = df.word_num == 1
+    is_after_breakpoint = max_value <= df.left
+
+    return block_matching & (is_first_word) & (is_after_breakpoint)
+
+
 class TextRecognizer:
     '''
     A class which allows to convert image object to text.
@@ -76,7 +84,7 @@ class TextRecognizer:
 
         max_value, block_num = self.get_column_offset_boundaries(data_frame)
 
-        block_offset_words_df = data_frame[(data_frame.block_num == block_num) & (
-            data_frame.word_num == 1) & (max_value <= data_frame.left)]
+        block_offset_words_df = data_frame[lambda x: are_rows_matching(
+            data_frame, block_num, max_value)]
 
         return block_offset_words_df
