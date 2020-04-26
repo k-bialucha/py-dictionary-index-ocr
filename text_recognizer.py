@@ -49,3 +49,16 @@ class TextRecognizer:
         data = pytesseract.image_to_data(
             self.image, lang=self.language, output_type="data.frame")
         return data
+
+    def get_first_words(self):
+        """ Extracts first word data for each line in image
+        uses get_data function
+
+        Returns:
+        object: pandas.DataFrame of Tesseract data
+
+        """
+        data_frame = self.get_data()
+
+        first_words = data_frame.query('word_num == 1')
+        return first_words
