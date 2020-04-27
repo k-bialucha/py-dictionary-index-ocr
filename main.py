@@ -70,7 +70,7 @@ def main():
 
     # recognize content
     recognizer = TextRecognizer(temp_filename, language)
-    first_words = recognizer.get_offset_first_words()
+    first_words, breakpoints = recognizer.get_offset_first_words()
 
     # delete the temporary file
     os.remove(temp_filename)
@@ -79,6 +79,10 @@ def main():
     image_marked = preprocess_result[0]
     for i, row in first_words.iterrows():
         image_marked = mark_word(image_marked, row)
+
+    for bp in breakpoints:
+        image_marked = mark_breakpoint(
+            image_marked, bp[1], bp[2])
 
     # save first words to CSV
     first_words.to_csv('data.csv')
