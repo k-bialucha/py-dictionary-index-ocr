@@ -26,6 +26,31 @@ def mark_word(image, word_data):
     return image_marked
 
 
+def mark_breakpoint(image, x_start, x_end):
+    image_height = image.shape[0]
+    x_start = int(round(x_start))
+    x_end = int(round(x_end))
+
+    # breakpoint start line points
+    start_top = (x_start, 0)
+    start_bottom = (x_start, image_height)
+
+    # breakpoint end line points
+    end_top = (x_end, 0)
+    end_bottom = (x_end, image_height)
+
+    line_color = (230, 70, 40)
+    line_thickness = 1
+
+    image_marked = image
+    image_marked = cv2.line(image_marked,
+                            start_top, start_bottom, line_color, line_thickness)
+    image_marked = cv2.line(image_marked,
+                            end_top, end_bottom, line_color, line_thickness)
+
+    return image_marked
+
+
 def main():
     '''
     Execute full recognition process
