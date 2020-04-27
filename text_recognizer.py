@@ -58,19 +58,22 @@ class TextRecognizer:
             self.image, lang=self.language, output_type="data.frame")
         return data
 
-    def get_column_offset_boundaries(self, data_frame):
+    def get_block_offset_breakpoints(self, data_frame):
         # filter in only words from 2 main blocks
-        top_blocks = data_frame.block_num.value_counts().nlargest(n=2)
-        top_block_1 = top_blocks.index[1]
+        top_num_words_blocks = data_frame.block_num.value_counts().nlargest(n=2)
 
-        top_block_1_df = data_frame[(data_frame.block_num ==
-                                     top_block_1)]
+        block_offset_breakpoints = list()
+        for block in top_num_words_blocks.index:
+            top_block_df = data_frame[(data_frame.block_num ==
+                                       block)]
 
-        left_min = top_block_1_df["left"].min()
-        left_max = top_block_1_df["left"].max()
-        offset_breakpoint = left_min + (left_max - left_min) * 0.03
+            left_min = top_block_df["left"].min()
+            left_max = top_block_df["left"].max()
+            offset_breakpoint = left_min + (left_max - left_min) * 0.018
 
-        return (offset_breakpoint, top_block_1)
+            block_offset_breakpoints.append((block, offset_breakpoint))
+
+        return block_offset_breakpoints
 
     def get_offset_first_words(self):
         """ Extracts first word data for each offset line in image
@@ -82,9 +85,16 @@ class TextRecognizer:
         """
         data_frame = self.get_data()
 
-        max_value, block_num = self.get_column_offset_boundaries(data_frame)
+        block_offset_breakpoints = self.get_block_offset_breakpoints(
+            data_frame)
 
-        block_offset_words_df = data_frame[lambda x: are_rows_matching(
-            data_frame, block_num, max_value)]
+        block_1 = block_offset_breakpoints[0][0]
+        block_1_breakpoint = block_offset_breakpoints[0][1]
+        block_2 = block_offset_breakpoints[1][0]
+        block_2_breakpoint = block_offset_breakpoints[1][1]
 
-        return block_offset_words_df
+        offset_first_words_df = data_frame[(are_rows_matching(
+            data_frame, block_1, block_1_breakpoint)) | (are_rows_matching(
+                data_frame, block_2, block_2_breakpoint))]
+
+        return offset_first_words_df
