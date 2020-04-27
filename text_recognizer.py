@@ -5,12 +5,14 @@ import pytesseract
 from PIL import Image
 
 
-def are_rows_matching(df, block_num, max_value):
+def are_rows_matching(df, block_num, breakpoint_start, breakpoint_end):
     block_matching = df.block_num == block_num
     is_first_word = df.word_num == 1
-    is_after_breakpoint = max_value <= df.left
 
-    return block_matching & (is_first_word) & (is_after_breakpoint)
+    is_after_breakpoint_start = breakpoint_start <= df.left
+    is_before_breakpoint_end = df.left <= breakpoint_end
+
+    return (block_matching) & (is_first_word) & (is_after_breakpoint_start) & (is_before_breakpoint_end)
 
 
 class TextRecognizer:
@@ -69,9 +71,11 @@ class TextRecognizer:
 
             left_min = top_block_df["left"].min()
             left_max = top_block_df["left"].max()
-            offset_breakpoint = left_min + (left_max - left_min) * 0.018
+            offset_breakpoint_start = left_min + (left_max - left_min) * 0.05
+            offset_breakpoint_end = left_min + (left_max - left_min) * 0.1
 
-            block_offset_breakpoints.append((block, offset_breakpoint))
+            block_offset_breakpoints.append(
+                (block, offset_breakpoint_start, offset_breakpoint_end))
 
         return block_offset_breakpoints
 
@@ -89,12 +93,14 @@ class TextRecognizer:
             data_frame)
 
         block_1 = block_offset_breakpoints[0][0]
-        block_1_breakpoint = block_offset_breakpoints[0][1]
+        block_1_breakpoint_start = block_offset_breakpoints[0][1]
+        block_1_breakpoint_end = block_offset_breakpoints[0][2]
         block_2 = block_offset_breakpoints[1][0]
-        block_2_breakpoint = block_offset_breakpoints[1][1]
+        block_2_breakpoint_start = block_offset_breakpoints[1][1]
+        block_2_breakpoint_end = block_offset_breakpoints[1][2]
 
         offset_first_words_df = data_frame[(are_rows_matching(
-            data_frame, block_1, block_1_breakpoint)) | (are_rows_matching(
-                data_frame, block_2, block_2_breakpoint))]
+            data_frame, block_1, block_1_breakpoint_start, block_1_breakpoint_end)) | (are_rows_matching(
+                data_frame, block_2, block_2_breakpoint_start, block_2_breakpoint_end))]
 
-        return offset_first_words_df
+        return offset_first_words_df, block_offset_breakpoints
