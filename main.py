@@ -1,11 +1,10 @@
 '''
 App's main module.
 '''
-import os
 import cv2
 
 from parse_arguments import parse_arguments
-from preprocess_image import ImageManipulator
+from imaging import ImageManipulator
 from text_recognizer import TextRecognizer
 
 
@@ -85,14 +84,13 @@ def main():
     language = args['lang']
 
     image_manipulator = ImageManipulator(original_image_path)
-    # create filename for temporary file
 
     # preprocess image
     image_manipulator.preprocess_image(preprocess_mode)
 
     # recognize content
     recognizer = TextRecognizer(
-        image_manipulator.get_image_filename(), language)
+        image_manipulator.get_image_preprocessed_filename(), language)
     first_words, breakpoints = recognizer.get_offset_first_words()
 
     # mark each word on the original image

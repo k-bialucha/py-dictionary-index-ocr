@@ -10,12 +10,15 @@ class ImageManipulator:
     Manipulates the image
     '''
     image = None
-    image_processed = None
-    temp_filename = None
+    image_preprocessed = None
+    image_preprocessed_filename = None
 
-    def __init__(self, image_path):  # language
+    def __init__(self, image_path):
         self.image = cv2.imread(image_path)
-        self.temp_filename = "{}.png".format(os.getpid())
+        self.image_preprocessed_filename = "{}.png".format(os.getpid())
+
+    def __del__(self):
+        os.remove(self.image_preprocessed_filename)
 
     def preprocess_image(self, preprocess_mode):
         '''
@@ -35,19 +38,12 @@ class ImageManipulator:
 
         # write the grayscale image to disk as a temporary file so we can
         # apply OCR to it
-        cv2.imwrite(self.temp_filename, image_gray)
+        cv2.imwrite(self.image_preprocessed_filename, image_gray)
 
-        self.image_processed = image_gray
-        cv2.imwrite(self.temp_filename, image_gray)
+        self.image_preprocessed = image_gray
 
-    def get_image_filename(self):
+    def get_image_preprocessed_filename(self):
         '''
-        Returns the temporary file name
+        Returns the preprocessed image file name
         '''
-        return self.temp_filename
-
-    def clean(self):
-        '''
-        Cleans the temporary file
-        '''
-        os.remove(self.temp_filename)
+        return self.image_preprocessed_filename
