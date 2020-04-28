@@ -23,6 +23,29 @@ def mark_word(image, word_data):
     image_marked = cv2.line(image,
                             start_point, end_point, line_color, line_thickness)
 
+    # draw rectangle
+
+    rect_start_point = (
+        start_point[0] + word_data.width + 5, start_point[1] - word_data.height - 3)
+    rect_end_point = (
+        start_point[0] + int(2.2 * word_data.width) + 10, start_point[1] + 3)
+    image_marked = cv2.rectangle(
+        image_marked, rect_start_point, rect_end_point, (150, 150, 200), -1)
+
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    text_start_point = (
+        start_point[0] + word_data.width + 10, start_point[1] - 5)
+    font_scale = 0.7
+    line_type = 2
+
+    image_marked = cv2.putText(image_marked,
+                               word_data.text,
+                               text_start_point,
+                               font,
+                               font_scale,
+                               (252, 252, 252),
+                               line_type)
+
     return image_marked
 
 
