@@ -5,7 +5,7 @@ import os
 import cv2
 
 from parse_arguments import parse_arguments
-from preprocess_image import preprocess_image
+from preprocess_image import ImageManipulator
 from text_recognizer import TextRecognizer
 
 
@@ -84,22 +84,19 @@ def main():
     preprocess_mode = args['preprocess']
     language = args['lang']
 
+    image_manipulator = ImageManipulator(original_image_path)
     # create filename for temporary file
-    temp_filename = "{}.png".format(os.getpid())
 
     # preprocess image
-    preprocess_result = preprocess_image(
-        original_image_path, preprocess_mode, temp_filename)
+    image_manipulator.preprocess_image(preprocess_mode)
 
     # recognize content
-    recognizer = TextRecognizer(temp_filename, language)
+    recognizer = TextRecognizer(
+        image_manipulator.get_image_filename(), language)
     first_words, breakpoints = recognizer.get_offset_first_words()
 
-    # delete the temporary file
-    os.remove(temp_filename)
-
     # mark each word on the original image
-    image_marked = preprocess_result[0]
+    image_marked = image_manipulator.image
     for i, row in first_words.iterrows():
         image_marked = mark_word(image_marked, row)
 
