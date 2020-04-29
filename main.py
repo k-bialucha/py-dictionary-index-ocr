@@ -3,9 +3,9 @@ App's main module.
 '''
 import cv2
 
-from parse_arguments import parse_arguments
+from input import parse_arguments
 from imaging import ImageManipulator
-from text_recognizer import TextRecognizer
+from recognition import TextRecognizer
 
 
 def mark_word(image, word_data):
