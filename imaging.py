@@ -10,8 +10,11 @@ class ImageManipulator:
     Manipulates the image
     '''
     image = None
+
     image_preprocessed = None
     image_preprocessed_filename = None
+
+    image_marked = None
 
     def __init__(self, image_path):
         self.image = cv2.imread(image_path)
@@ -47,3 +50,73 @@ class ImageManipulator:
         Returns the preprocessed image file name
         '''
         return self.image_preprocessed_filename
+
+    def mark_word(self, word_data):
+        '''
+        Puts an underline to the word
+        and prints the recognized word next to the actual
+        '''
+        if self.image_marked is None:
+            self.image_marked = self.image
+
+        y_level = word_data.top + word_data.height + 3
+        x_start = word_data.left - 3
+        x_end = word_data.left + word_data.width + 3
+
+        start_point = (x_start, y_level)
+        end_point = (x_end, y_level)
+
+        line_color = (70, 70, 220)
+        line_thickness = 2
+
+        self.image_marked = cv2.line(self.image,
+                                     start_point, end_point, line_color, line_thickness)
+
+        # draw rectangle
+        rect_start_point = (
+            start_point[0] + word_data.width + 5, start_point[1] - word_data.height - 3)
+        rect_end_point = (
+            start_point[0] + int(2.2 * word_data.width) + 10, start_point[1] + 3)
+        self.image_marked = cv2.rectangle(
+            self.image_marked, rect_start_point, rect_end_point, (150, 150, 200), -1)
+
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        text_start_point = (
+            start_point[0] + word_data.width + 10, start_point[1] - 5)
+        font_scale = 0.7
+        line_type = 2
+
+        self.image_marked = cv2.putText(self.image_marked,
+                                        word_data.text,
+                                        text_start_point,
+                                        font,
+                                        font_scale,
+                                        (252, 252, 252),
+                                        line_type)
+
+    def mark_breakpoint(self, x_start, x_end):
+        '''
+        Marks a vertical line for breakpoint
+        '''
+        if self.image_marked is None:
+            self.image_marked = self.image
+
+        image_height = self.image.shape[0]
+        x_start = int(round(x_start))
+        x_end = int(round(x_end))
+
+        # breakpoint start line points
+        start_top = (x_start, 0)
+        start_bottom = (x_start, image_height)
+
+        # breakpoint end line points
+        end_top = (x_end, 0)
+        end_bottom = (x_end, image_height)
+
+        line_color = (230, 70, 40)
+        line_thickness = 3
+
+        self.image_marked = cv2.line(self.image_marked,
+                                     start_top, start_bottom, line_color, line_thickness)
+        self.image_marked = cv2.line(self.image_marked,
+                                     end_top, end_bottom, line_color, line_thickness)
