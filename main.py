@@ -1,8 +1,6 @@
 '''
 App's main module.
 '''
-import cv2
-
 from input import parse_arguments
 from imaging import ImageManipulator
 from recognition import TextRecognizer
@@ -38,12 +36,8 @@ def main():
     # save first words to CSV
     first_words.to_csv('data.csv')
 
-    # TODO: allow to disable image output
-    # show the output images
-    cv2.imshow("Image - debug", image_manipulator.image_marked)
-    # cv2.imshow("Image", image_manipulator.image)
-    # cv2.imshow("Output", image_manipulator.image_preprocessed)
-    cv2.waitKey(0)
+    # show image
+    image_manipulator.show(show_marked=True)
 
 
 if __name__ == "__main__":

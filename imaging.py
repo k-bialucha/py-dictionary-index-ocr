@@ -120,3 +120,19 @@ class ImageManipulator:
                                      start_top, start_bottom, line_color, line_thickness)
         self.image_marked = cv2.line(self.image_marked,
                                      end_top, end_bottom, line_color, line_thickness)
+
+    def show(self, show_original=False, show_preprocessed=False, show_marked=False):
+        '''
+        Shows specified image(s)
+        Allows to show original, preprocessed or marked image.
+        '''
+        if (show_original):
+            cv2.imshow("Image - original", self.image)
+
+        if (show_preprocessed):
+            cv2.imshow("Image - preprocessed", self.image_preprocessed)
+
+        if (show_marked):
+            cv2.imshow("Image - marked", self.image_marked)
+
+        cv2.waitKey(0)
