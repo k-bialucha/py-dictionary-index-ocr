@@ -5,6 +5,40 @@ import os
 import cv2
 
 
+class ImagePoint:
+    '''
+    Helper class for managing image points
+    '''
+    pos_x = None
+    pos_y = None
+
+    def __init__(self, pos_x, pos_y):
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+
+    def change_x(self, change):
+        '''
+        Adds specified amount to X position
+
+        Returns new ImagePoint instance
+        '''
+        return ImagePoint(self.pos_x + change, self.pos_y)
+
+    def change_y(self, change):
+        '''
+        Adds specified amount to Y position
+
+        Returns new ImagePoint instance
+        '''
+        return ImagePoint(self.pos_x, self.pos_y + change)
+
+    def get_point(self):
+        '''
+        Returns (X,Y) point tuple required by OpenCV
+        '''
+        return (self.pos_x, self.pos_y)
+
+
 class ImageManipulator:
     '''
     Manipulates the image
@@ -63,14 +97,14 @@ class ImageManipulator:
         x_start = word_data.left - 3
         x_end = word_data.left + word_data.width + 3
 
-        start_point = (x_start, y_level)
-        end_point = (x_end, y_level)
+        start_point = ImagePoint(x_start, y_level)
+        end_point = ImagePoint(x_end, y_level)
 
         line_color = (70, 70, 220)
         line_thickness = 2
 
         self.image_marked = cv2.line(self.image,
-                                     start_point, end_point, line_color, line_thickness)
+                                     start_point.get_point(), end_point.get_point(), line_color, line_thickness)
 
         # draw rectangle
         rect_start_point = (
