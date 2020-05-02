@@ -104,25 +104,34 @@ class ImageManipulator:
         line_thickness = 2
 
         self.image_marked = cv2.line(self.image,
-                                     start_point.get_point(), end_point.get_point(), line_color, line_thickness)
+                                     start_point.get_point(),
+                                     end_point.get_point(),
+                                     line_color,
+                                     line_thickness)
 
         # draw rectangle
-        rect_start_point = (
-            start_point[0] + word_data.width + 5, start_point[1] - word_data.height - 3)
-        rect_end_point = (
-            start_point[0] + int(2.2 * word_data.width) + 10, start_point[1] + 3)
-        self.image_marked = cv2.rectangle(
-            self.image_marked, rect_start_point, rect_end_point, (150, 150, 200), -1)
+        rect_start_point = start_point.change_x(
+            word_data.width + 5).change_y(-1*(word_data.height+3))
+        rect_end_point = start_point.change_x(
+            int(2.2 * word_data.width) + 10).change_y(3)
 
+        self.image_marked = cv2.rectangle(self.image_marked,
+                                          rect_start_point.get_point(),
+                                          rect_end_point.get_point(),
+                                          (150, 150, 200),
+                                          -1)
+
+        # draw word
         font = cv2.FONT_HERSHEY_SIMPLEX
-        text_start_point = (
-            start_point[0] + word_data.width + 10, start_point[1] - 5)
+        text_start_point = start_point.change_x(
+            word_data.width + 10).change_y(-5)
+
         font_scale = 0.7
         line_type = 2
 
         self.image_marked = cv2.putText(self.image_marked,
                                         word_data.text,
-                                        text_start_point,
+                                        text_start_point.get_point(),
                                         font,
                                         font_scale,
                                         (252, 252, 252),
@@ -140,20 +149,26 @@ class ImageManipulator:
         x_end = int(round(x_end))
 
         # breakpoint start line points
-        start_top = (x_start, 0)
-        start_bottom = (x_start, image_height)
+        start_top = ImagePoint(x_start, 0)
+        start_bottom = ImagePoint(x_start, image_height)
 
         # breakpoint end line points
-        end_top = (x_end, 0)
-        end_bottom = (x_end, image_height)
+        end_top = ImagePoint(x_end, 0)
+        end_bottom = ImagePoint(x_end, image_height)
 
         line_color = (230, 70, 40)
         line_thickness = 3
 
         self.image_marked = cv2.line(self.image_marked,
-                                     start_top, start_bottom, line_color, line_thickness)
+                                     start_top.get_point(),
+                                     start_bottom.get_point(),
+                                     line_color,
+                                     line_thickness)
         self.image_marked = cv2.line(self.image_marked,
-                                     end_top, end_bottom, line_color, line_thickness)
+                                     end_top.get_point(),
+                                     end_bottom.get_point(),
+                                     line_color,
+                                     line_thickness)
 
     def show(self, show_original=False, show_preprocessed=False, show_marked=False):
         '''
