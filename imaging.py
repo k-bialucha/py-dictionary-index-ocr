@@ -4,6 +4,9 @@ Module for preprocessing provided image.
 import os
 import cv2
 
+COLOR_RED = (70, 70, 220)
+COLOR_BLUE = (230, 70, 40)
+
 
 class ImagePoint:
     '''
@@ -103,7 +106,7 @@ class ImageManipulator:
         '''
         return self.image_preprocessed_filename
 
-    def mark_word(self, word_data):
+    def mark_word(self, word_data, line_color=COLOR_RED, line_thickness=3):
         '''
         Puts an underline to the word
         and prints the recognized word next to the actual
@@ -117,9 +120,6 @@ class ImageManipulator:
 
         start_point = ImagePoint(x_start, y_level)
         end_point = ImagePoint(x_end, y_level)
-
-        line_color = (70, 70, 220)
-        line_thickness = 2
 
         self.image_marked = cv2.line(self.image,
                                      start_point.get_point(),
@@ -155,7 +155,7 @@ class ImageManipulator:
                                         (252, 252, 252),
                                         line_type)
 
-    def mark_breakpoint(self, x_start, x_end):
+    def mark_breakpoint(self, x_start, x_end, line_color=COLOR_BLUE, line_thickness=3):
         '''
         Marks a vertical line for breakpoint
         '''
@@ -173,9 +173,6 @@ class ImageManipulator:
         # breakpoint end line points
         end_top = ImagePoint(x_end, 0)
         end_bottom = ImagePoint(x_end, image_height)
-
-        line_color = (230, 70, 40)
-        line_thickness = 3
 
         self.image_marked = cv2.line(self.image_marked,
                                      start_top.get_point(),
