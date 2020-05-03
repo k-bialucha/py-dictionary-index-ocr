@@ -39,6 +39,24 @@ class ImagePoint:
         return (self.pos_x, self.pos_y)
 
 
+def get_resized_window(input_image, max_height):
+    '''
+    Returns a new window size that fits image size
+    '''
+    original_height = input_image.shape[0]
+    original_width = input_image.shape[1]
+
+    resize_factor = max_height / original_height
+
+    if resize_factor < 1:
+        new_width = round(original_width * resize_factor)
+        new_height = round(original_height * resize_factor)
+
+        return (new_width, new_height)
+
+    return (original_width, original_height)
+
+
 class ImageManipulator:
     '''
     Manipulates the image
@@ -170,18 +188,38 @@ class ImageManipulator:
                                      line_color,
                                      line_thickness)
 
-    def show(self, show_original=False, show_preprocessed=False, show_marked=False):
+    def show(self, show_original=False, show_preprocessed=False, show_marked=False, max_height=960):
         '''
         Shows specified image(s)
         Allows to show original, preprocessed or marked image.
         '''
-        if (show_original):
-            cv2.imshow("Image - original", self.image)
+        base_name = "Image - {}"
 
-        if (show_preprocessed):
-            cv2.imshow("Image - preprocessed", self.image_preprocessed)
+        if show_original:
+            window_name = base_name.format("original")
+            cv2.namedWindow(window_name, flags=cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(window_name,
+                             get_resized_window(self.image, max_height))
 
-        if (show_marked):
-            cv2.imshow("Image - marked", self.image_marked)
+            cv2.imshow(window_name,
+                       self.image_marked)
+
+        if show_preprocessed:
+            window_name = base_name.format("preprocessed")
+            cv2.namedWindow(window_name, flags=cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(window_name,
+                             get_resized_window(self.image, max_height))
+
+            cv2.imshow(window_name,
+                       self.image_preprocessed)
+
+        if show_marked:
+            window_name = base_name.format("marked")
+            cv2.namedWindow(window_name, flags=cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(window_name,
+                             get_resized_window(self.image, max_height))
+
+            cv2.imshow(window_name,
+                       self.image_marked)
 
         cv2.waitKey(0)
