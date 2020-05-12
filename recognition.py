@@ -78,7 +78,6 @@ class TextRecognizer:
             block_offset_breakpoints.append(
                 (block, offset_breakpoint_start, offset_breakpoint_end))
 
-        print("offset_block_breakpoints!", block_offset_breakpoints)
         return block_offset_breakpoints
 
     def get_offset_first_words(self):
@@ -106,3 +105,14 @@ class TextRecognizer:
                 data_frame, block_2, block_2_breakpoint_start, block_2_breakpoint_end))]
 
         return offset_first_words_df, block_offset_breakpoints
+
+    def get_word_list(self):
+        ''' Extracts dictionary words as a simple list.
+
+        Returns a list words (string).
+        '''
+        offset_first_words_df = self.get_offset_first_words()[0]
+
+        print(offset_first_words_df)
+
+        return offset_first_words_df['text'].tolist()
