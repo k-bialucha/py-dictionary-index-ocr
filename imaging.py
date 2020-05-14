@@ -3,10 +3,16 @@ Module for preprocessing provided image.
 '''
 import os
 import cv2
+import PILasOPENCV as Image
+import PILasOPENCV as ImageDraw
+import PILasOPENCV as ImageFont
 
+# RGB colors
 COLOR_RED = (70, 70, 220)
-COLOR_BLUE = (230, 70, 40)
+COLOR_GREEN = (40, 200, 70)
 
+path = os.path.abspath("./assets/RobotoMono.ttf")
+font_pil = ImageFont.truetype(path, 18)
 
 class ImagePoint:
     '''
@@ -71,9 +77,15 @@ class ImageManipulator:
 
     image_marked = None
 
+    pil_image = None
+    draw = None
+
     def __init__(self, image_path):
         self.image = cv2.imread(image_path)
         self.image_preprocessed_filename = "{}.png".format(os.getpid())
+
+        self.pil_image = Image.open(image_path)
+        self.draw = ImageDraw.Draw(self.pil_image)
 
     def __del__(self):
         os.remove(self.image_preprocessed_filename)
@@ -121,11 +133,10 @@ class ImageManipulator:
         start_point = ImagePoint(x_start, y_level)
         end_point = ImagePoint(x_end, y_level)
 
-        self.image_marked = cv2.line(self.image,
-                                     start_point.get_point(),
-                                     end_point.get_point(),
-                                     line_color,
-                                     line_thickness)
+        self.draw.line(
+            [start_point.get_point(), end_point.get_point()],
+            line_color,
+            width=line_thickness)
 
         # draw rectangle
         rect_start_point = start_point.change_x(
@@ -133,29 +144,22 @@ class ImageManipulator:
         rect_end_point = start_point.change_x(
             int(2.2 * word_data.width) + 10).change_y(3)
 
-        self.image_marked = cv2.rectangle(self.image_marked,
-                                          rect_start_point.get_point(),
-                                          rect_end_point.get_point(),
-                                          (150, 150, 200),
-                                          -1)
+        self.draw.rectangle(
+            [rect_start_point.get_point(), rect_end_point.get_point()], 
+            fill=(50, 50, 50))
 
         # draw word
-        font = cv2.FONT_HERSHEY_SIMPLEX
         text_start_point = start_point.change_x(
-            word_data.width + 10).change_y(-5)
+            word_data.width + 10).change_y(-16)
 
-        font_scale = 0.7
-        line_type = 2
+        self.draw.text(
+            text_start_point.get_point(), 
+            word_data.text,
+            font=font_pil,
+            fill=(250, 250, 200),
+            outline=(200, 50, 50))
 
-        self.image_marked = cv2.putText(self.image_marked,
-                                        word_data.text,
-                                        text_start_point.get_point(),
-                                        font,
-                                        font_scale,
-                                        (252, 252, 252),
-                                        line_type)
-
-    def mark_breakpoint(self, x_start, x_end, line_color=COLOR_BLUE, line_thickness=3):
+    def mark_breakpoint(self, x_start, x_end, line_color=COLOR_GREEN, line_thickness=2):
         '''
         Marks a vertical line for breakpoint
         '''
@@ -174,16 +178,15 @@ class ImageManipulator:
         end_top = ImagePoint(x_end, 0)
         end_bottom = ImagePoint(x_end, image_height)
 
-        self.image_marked = cv2.line(self.image_marked,
-                                     start_top.get_point(),
-                                     start_bottom.get_point(),
-                                     line_color,
-                                     line_thickness)
-        self.image_marked = cv2.line(self.image_marked,
-                                     end_top.get_point(),
-                                     end_bottom.get_point(),
-                                     line_color,
-                                     line_thickness)
+        # draw lines
+        self.draw.line(
+            [start_top.get_point(), start_bottom.get_point()],
+            width=line_thickness,
+            fill=line_color)
+        self.draw.line(
+            [end_top.get_point(), end_bottom.get_point()],
+            width=line_thickness,
+            fill=line_color)
 
     def show(self, show_original=False, show_preprocessed=False, show_marked=False, max_height=960):
         '''
@@ -219,4 +222,5 @@ class ImageManipulator:
             cv2.imshow(window_name,
                        self.image_marked)
 
+        self.pil_image.show()
         cv2.waitKey(0)
