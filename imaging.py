@@ -41,6 +41,22 @@ class ImagePoint:
         '''
         return ImagePoint(self.pos_x, self.pos_y + change)
 
+    def set_x(self, value):
+        '''
+        Sets X position to specified
+
+        Returns new ImagePoint instance
+        '''
+        return ImagePoint(value, self.pos_y)    
+        
+    def set_y(self, value):
+        '''
+        Sets Y position to specified
+
+        Returns new ImagePoint instance
+        '''
+        return ImagePoint(self.pos_x, value)
+
     def get_point(self):
         '''
         Returns (X,Y) point tuple required by OpenCV
@@ -140,7 +156,7 @@ class ImageManipulator:
 
         # draw rectangle
         rect_start_point = start_point.change_x(
-            word_data.width + 5).change_y(-1*(word_data.height+3))
+            word_data.width + 5).set_y((word_data.top-3))
         rect_end_point = start_point.change_x(
             int(2.2 * word_data.width) + 10).change_y(3)
 
@@ -219,8 +235,7 @@ class ImageManipulator:
             cv2.resizeWindow(window_name,
                              get_resized_window(self.image, max_height))
 
-            cv2.imshow(window_name,
-                       self.image_marked)
+            image_marked = self.pil_image.getim()
+            cv2.imshow(window_name, image_marked)
 
-        self.pil_image.show()
         cv2.waitKey(0)
