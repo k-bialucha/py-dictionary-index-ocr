@@ -11,15 +11,15 @@ def main():
     '''
     args = parse_arguments()
 
-    original_image_path = args['image']
+    image_paths = args['image']
     preprocess_mode = args['preprocess']
     debug = args['debug']
     language = args['lang']
 
-    processing_result = process_image(original_image_path, preprocess_mode, language, debug)
-
-    print("==========\nResults:\n")
-    print(processing_result)
+    for image_path in image_paths:
+        processing_result = process_image(image_path, preprocess_mode, language, debug)
+        print("==========\nResults:\n")
+        print(processing_result)
 
 if __name__ == "__main__":
     main()

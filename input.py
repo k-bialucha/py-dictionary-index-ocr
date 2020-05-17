@@ -15,7 +15,7 @@ def parse_arguments():
     '''
     arg_parser = argparse.ArgumentParser()
 
-    arg_parser.add_argument("-i", "--image", required=True,
+    arg_parser.add_argument("-i", "--image", required=True, nargs="+",
                             help="path to input image to be recognized")
 
     arg_parser.add_argument("-p", "--preprocess", type=str, default="thresh",
