@@ -5,7 +5,7 @@ to a final output.
 from imaging import ImageManipulator
 from recognition import TextRecognizer
 
-def process_image(image_path, preprocess_mode, language):
+def process_image(image_path, preprocess_mode, language, debug):
     '''
     Function that handles processing of a single image
 
@@ -22,18 +22,19 @@ def process_image(image_path, preprocess_mode, language):
         image_manipulator.get_image_preprocessed_filename(), language)
     first_words, breakpoints = recognizer.get_offset_first_words()
 
-    # mark each word on the original image
-    for _, row in first_words.iterrows():
-        image_manipulator.mark_word(row)
+    if debug:
+        # mark each word on the original image
+        for _, row in first_words.iterrows():
+            image_manipulator.mark_word(row)
 
-    for bp in breakpoints:
-        image_manipulator.mark_breakpoint(bp[1], bp[2])
+        for bp in breakpoints:
+            image_manipulator.mark_breakpoint(bp[1], bp[2])
 
-    # save first words to CSV
-    first_words.to_csv('data.csv')
+        # save first words to CSV
+        first_words.to_csv('data.csv')
 
-    # show image
-    image_manipulator.show(show_marked=True)
+        # show image
+        image_manipulator.show(show_marked=True)
 
     return first_words
     

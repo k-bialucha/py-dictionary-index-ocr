@@ -24,6 +24,10 @@ def parse_arguments():
     arg_parser.add_argument("-l", "--lang", type=str, default="eng+frk",
                             help="set language of recognition")
 
+    arg_parser.add_argument('--default', dest='debug', action='store_true')
+    arg_parser.add_argument('--no-debug', dest='debug', action='store_false')
+    arg_parser.set_defaults(debug=True)
+
     args = vars(arg_parser.parse_args())
 
     return args
