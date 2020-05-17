@@ -1,5 +1,5 @@
 '''
-Module for preprocessing provided image.
+Module for direct image manipulation.
 '''
 import os
 import cv2

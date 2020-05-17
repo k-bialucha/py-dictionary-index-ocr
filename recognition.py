@@ -1,5 +1,6 @@
 '''
-Allows to use TextRecognizer.
+Module that wraps pytesseract recognition process
+in the TextRecognizer class.
 '''
 import pytesseract
 from PIL import Image
