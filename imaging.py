@@ -47,8 +47,8 @@ class ImagePoint:
 
         Returns new ImagePoint instance
         '''
-        return ImagePoint(value, self.pos_y)    
-        
+        return ImagePoint(value, self.pos_y)
+
     def set_y(self, value):
         '''
         Sets Y position to specified
@@ -161,7 +161,7 @@ class ImageManipulator:
             int(2.2 * word_data.width) + 10).change_y(3)
 
         self.draw.rectangle(
-            [rect_start_point.get_point(), rect_end_point.get_point()], 
+            [rect_start_point.get_point(), rect_end_point.get_point()],
             fill=(50, 50, 50))
 
         # draw word
@@ -169,7 +169,7 @@ class ImageManipulator:
             word_data.width + 10).change_y(-16)
 
         self.draw.text(
-            text_start_point.get_point(), 
+            text_start_point.get_point(),
             word_data.text,
             font=font_pil,
             fill=(250, 250, 200),
