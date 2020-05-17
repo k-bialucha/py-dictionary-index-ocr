@@ -72,6 +72,15 @@ class TextRecognizer:
         self.__data = pytesseract.image_to_data(
             self.image, lang=self.language, output_type="data.frame")
 
+    def get_data(self):
+        '''
+        Returns pandas DataFrame of all data from the image.
+        '''
+        if self.__data is None:
+            self.__extract_data()
+
+        return self.__data
+
     def get_block_offset_breakpoints(self):
         '''
         Calculates breakpoints for detecting offset words in 2 main blocks.
@@ -117,10 +126,10 @@ class TextRecognizer:
 
         offset_first_words_df = self.__data[(are_rows_matching(
             self.__data, block_1, block_1_breakpoint_start, block_1_breakpoint_end))
-            | (are_rows_matching(
-                self.__data, block_2, block_2_breakpoint_start, block_2_breakpoint_end))]
+                                            | (are_rows_matching(
+                                            self.__data, block_2, block_2_breakpoint_start, block_2_breakpoint_end))]
 
-        return offset_first_words_df, block_offset_breakpoints
+        return offset_first_words_df
 
     def get_word_list(self):
         '''

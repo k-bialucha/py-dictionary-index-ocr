@@ -23,6 +23,9 @@ def process_image(image_path, preprocess_mode, language, debug):
     # recognize content
     recognizer = TextRecognizer(
         image_manipulator.get_image_preprocessed_filename(), language)
+
+    # get recognition data
+    all_words = recognizer.get_data()
     first_words = recognizer.get_offset_first_words()
     breakpoints = recognizer.get_block_offset_breakpoints()
 
@@ -40,6 +43,7 @@ def process_image(image_path, preprocess_mode, language, debug):
 
         # save first words to CSV
         first_words.to_csv('./debug/{}_words.csv'.format(debug_tag))
+        all_words.to_csv('./debug/{}_all-words.csv'.format(debug_tag))
 
         # show image
         image_manipulator.show(show_marked=True)
