@@ -239,3 +239,10 @@ class ImageManipulator:
             cv2.imshow(window_name, image_marked)
 
         cv2.waitKey(0)
+
+    def save_debug(self, filename):
+        '''
+        Saves marked image under specified filename
+        '''
+        image_marked = self.pil_image.getim()
+        cv2.imwrite(filename, image_marked)

@@ -2,6 +2,8 @@
 Module for transforming input image
 to a final output.
 '''
+from datetime import datetime
+
 from imaging import ImageManipulator
 from recognition import TextRecognizer
 
@@ -23,6 +25,7 @@ def process_image(image_path, preprocess_mode, language, debug):
     first_words, breakpoints = recognizer.get_offset_first_words()
 
     if debug:
+        debug_tag = datetime.now().strftime('%y%m%d_%H%M%S')
         # mark each word on the original image
         for _, row in first_words.iterrows():
             image_manipulator.mark_word(row)
@@ -31,10 +34,13 @@ def process_image(image_path, preprocess_mode, language, debug):
             image_manipulator.mark_breakpoint(bp[1], bp[2])
 
         # save first words to CSV
-        first_words.to_csv('data.csv')
+        first_words.to_csv('./debug/{}_words.csv'.format(debug_tag))
 
         # show image
         image_manipulator.show(show_marked=True)
+
+        # save debug image
+        image_manipulator.save_debug('./debug/{}_debug-image.jpg'.format(debug_tag))
 
     return first_words
     
