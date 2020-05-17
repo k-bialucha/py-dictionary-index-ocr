@@ -2,10 +2,11 @@
 Module for transforming input image
 to a final output.
 '''
-from datetime import datetime
-
+from os import path
 from imaging import ImageManipulator
 from recognition import TextRecognizer
+
+from debug import DebugHandler
 
 def process_image(image_path, preprocess_mode, language, debug):
     '''
@@ -22,10 +23,14 @@ def process_image(image_path, preprocess_mode, language, debug):
     # recognize content
     recognizer = TextRecognizer(
         image_manipulator.get_image_preprocessed_filename(), language)
-    first_words, breakpoints = recognizer.get_offset_first_words()
+    first_words = recognizer.get_offset_first_words()
+    breakpoints = recognizer.get_block_offset_breakpoints()
 
     if debug:
-        debug_tag = datetime.now().strftime('%y%m%d_%H%M%S')
+        filename = path.basename(image_path)
+        debug_handler = DebugHandler(filename)
+
+        debug_tag = debug_handler.get_debug_tag()
         # mark each word on the original image
         for _, row in first_words.iterrows():
             image_manipulator.mark_word(row)
