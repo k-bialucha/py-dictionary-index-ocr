@@ -21,7 +21,7 @@ def parse_arguments():
     arg_parser.add_argument("-p", "--preprocess", type=str, default="thresh",
                             help="type of preprocessing to be done")
 
-    arg_parser.add_argument("-l", "--lang", type=str, default="eng+frk",
+    arg_parser.add_argument("-l", "--lang", type=str, default="deu+frk",
                             help="set language of recognition")
 
     arg_parser.add_argument('--default', dest='debug', action='store_true')
