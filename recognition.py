@@ -4,17 +4,7 @@ in the TextRecognizer class.
 '''
 import pytesseract
 from PIL import Image
-
-
-def are_rows_matching(df, block_num, breakpoint_start, breakpoint_end):
-    block_matching = df.block_num == block_num
-    is_first_word = df.word_num == 1
-
-    is_after_breakpoint_start = breakpoint_start <= df.left
-    is_before_breakpoint_end = df.left <= breakpoint_end
-
-    return (block_matching) & (is_first_word) & (is_after_breakpoint_start) & (is_before_breakpoint_end)
-
+import pandas as pd
 
 class TextRecognizer:
     '''
@@ -123,13 +113,17 @@ class TextRecognizer:
         block_2_breakpoint_start = block_offset_breakpoints[1][1]
         block_2_breakpoint_end = block_offset_breakpoints[1][2]
 
-        offset_first_words_df = self.__data[(are_rows_matching(
-            self.__data, block_1, block_1_breakpoint_start, block_1_breakpoint_end))
-                                            | (are_rows_matching(
-                                            self.__data, block_2, block_2_breakpoint_start, block_2_breakpoint_end))]
+        block_query = 'block_num ==  {} and left >= {} and left <= {}'
+        first_block = self.__data.query(block_query.format(
+            block_1, block_1_breakpoint_start, block_1_breakpoint_end))
+        second_block = self.__data.query(block_query.format(
+            block_2, block_2_breakpoint_start, block_2_breakpoint_end))
 
-        offset_first_words_without_first = offset_first_words_df.query('text.str.len() > 2')
-        return offset_first_words_without_first
+        offset_first_words_df = pd.concat([first_block, second_block])
+
+        offset_first_words_without_short = offset_first_words_df.query(
+            'text.str.len() > 2 and word_num == 1')
+        return offset_first_words_without_short
 
     def get_word_list(self):
         '''
