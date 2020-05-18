@@ -7,7 +7,6 @@ from PIL import Image
 
 
 def are_rows_matching(df, block_num, breakpoint_start, breakpoint_end):
-    # TODO: filter out short words
     block_matching = df.block_num == block_num
     is_first_word = df.word_num == 1
 
@@ -129,7 +128,8 @@ class TextRecognizer:
                                             | (are_rows_matching(
                                             self.__data, block_2, block_2_breakpoint_start, block_2_breakpoint_end))]
 
-        return offset_first_words_df
+        offset_first_words_without_first = offset_first_words_df.query('text.str.len() > 2')
+        return offset_first_words_without_first
 
     def get_word_list(self):
         '''
