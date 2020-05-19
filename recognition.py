@@ -125,6 +125,32 @@ class TextRecognizer:
             'text.str.len() > 2 and word_num == 1')
         return offset_first_words_without_short
 
+    def get_offset_first_words_alt(self):
+        '''
+        Extracts first word data for each offset line in image (alternative method)
+
+        Returns:
+        object: pandas.DataFrame of Tesseract data
+        '''
+        if self.__data is None:
+            self.__extract_data()
+
+        block_offset_breakpoints = self.get_block_offset_breakpoints()
+
+        block_1 = block_offset_breakpoints[0][0]
+        block_2 = block_offset_breakpoints[1][0]
+
+        block_query = 'block_num ==  {}'
+        first_block = self.__data.query(block_query.format(block_1))
+        second_block = self.__data.query(block_query.format(block_2))
+
+        offset_first_words_df = pd.concat([first_block, second_block])
+
+        offset_first_words_without_short = offset_first_words_df.query(
+            'text.str.len() > 2 and word_num == 1 and line_num == 1')
+
+        return offset_first_words_without_short
+
     def get_word_list(self):
         '''
         Extracts dictionary words as a simple list.
