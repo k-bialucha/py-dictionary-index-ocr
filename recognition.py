@@ -97,33 +97,23 @@ class TextRecognizer:
     def get_offset_first_words(self):
         '''
         Extracts first word data for each offset line in image
-
-        Returns:
-        object: pandas.DataFrame of Tesseract data
         '''
         if self.__data is None:
             self.__extract_data()
 
-        block_offset_breakpoints = self.get_block_offset_breakpoints()
-
-        block_1 = block_offset_breakpoints[0][0]
-        block_1_breakpoint_start = block_offset_breakpoints[0][1]
-        block_1_breakpoint_end = block_offset_breakpoints[0][2]
-        block_2 = block_offset_breakpoints[1][0]
-        block_2_breakpoint_start = block_offset_breakpoints[1][1]
-        block_2_breakpoint_end = block_offset_breakpoints[1][2]
+        (block1_bp_data, block2_bp_data) = self.get_block_offset_breakpoints()
 
         block_query = 'block_num ==  {} and left >= {} and left <= {}'
-        first_block = self.__data.query(block_query.format(
-            block_1, block_1_breakpoint_start, block_1_breakpoint_end))
-        second_block = self.__data.query(block_query.format(
-            block_2, block_2_breakpoint_start, block_2_breakpoint_end))
+        first_block_words = self.__data.query(block_query.format(
+            block1_bp_data[0], block1_bp_data[1], block1_bp_data[2]))
+        second_block_words = self.__data.query(block_query.format(
+            block2_bp_data[0], block2_bp_data[1], block2_bp_data[2]))
 
-        offset_first_words_df = pd.concat([first_block, second_block])
+        top_block_words = pd.concat([first_block_words, second_block_words])
 
-        offset_first_words_without_short = offset_first_words_df.query(
-            'text.str.len() > 2 and word_num == 1')
-        return offset_first_words_without_short
+        offset_first_words = top_block_words.query('text.str.len() > 2 and word_num == 1')
+
+        return offset_first_words
 
     def get_offset_first_words_alt(self):
         '''
