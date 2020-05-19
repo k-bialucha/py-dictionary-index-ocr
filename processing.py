@@ -34,6 +34,7 @@ def process_image(image_path, preprocess_mode, language, debug):
         debug_handler = DebugHandler(filename)
 
         debug_tag = debug_handler.get_debug_tag()
+
         # mark each word on the original image
         for _, row in first_words.iterrows():
             image_manipulator.mark_word(row)
@@ -41,15 +42,14 @@ def process_image(image_path, preprocess_mode, language, debug):
         for bp in breakpoints:
             image_manipulator.mark_breakpoint(bp[1], bp[2])
 
-        # save first words to CSV
-        first_words.to_csv('./debug/{}_words.csv'.format(debug_tag))
-        all_words.to_csv('./debug/{}_all-words.csv'.format(debug_tag))
-
         # show image
         image_manipulator.show(show_marked=True)
 
         # save debug image
         image_manipulator.save_debug('./debug/{}_debug-image.jpg'.format(debug_tag))
 
+        # export words to CSV
+        debug_handler.export_df_to_csv(first_words, 'words')
+        debug_handler.export_df_to_csv(all_words, 'all-words')
+
     return first_words
-    

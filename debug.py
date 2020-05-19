@@ -39,3 +39,9 @@ class DebugHandler:
         Returns single processing identifier
         '''
         return self.__debug_tag
+
+    def export_df_to_csv(self, data_frame, name):
+        '''
+        Exports DataFrame to CSV with current debug tag
+        '''
+        data_frame.to_csv('./debug/{}_{}.csv'.format(self.__debug_tag, name))
