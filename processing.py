@@ -3,12 +3,24 @@ Module for transforming input image
 to a final output.
 '''
 from os import path
+from enum import Enum
+
+from debug import DebugHandler
 from imaging import ImageManipulator
 from recognition import TextRecognizer
 
-from debug import DebugHandler
 
-def process_image(image_path, preprocess_mode, language, debug):
+class OutputFormat(Enum):
+    '''
+    Enumerates possible output formats for process_image function
+    '''
+    none = 0
+    word_list = 1
+    data_frame = 2
+    data_frame_stripped = 3
+
+
+def process_image(image_path, preprocess_mode, language, debug, output_format=OutputFormat.data_frame):
     '''
     Function that handles processing of a single image
 
@@ -46,10 +58,22 @@ def process_image(image_path, preprocess_mode, language, debug):
         image_manipulator.show(show_marked=True)
 
         # save debug image
-        image_manipulator.save_debug('./debug/{}_debug-image.jpg'.format(debug_tag))
+        image_manipulator.save_debug(
+            './debug/{}_debug-image.jpg'.format(debug_tag))
 
         # export words to CSV
         debug_handler.export_df_to_csv(first_words, 'words')
         debug_handler.export_df_to_csv(all_words, 'all-words')
 
-    return first_words
+    if output_format == OutputFormat.word_list:
+        # TODO: return a list of strings
+        return first_words
+
+    if output_format == OutputFormat.data_frame:
+        return first_words
+
+    if output_format == OutputFormat.data_frame_stripped:
+        return first_words.drop(
+            columns=['level', 'page_num', 'block_num', 'par_num', 'line_num', 'word_num'])
+
+    return None
