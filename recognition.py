@@ -113,7 +113,7 @@ class TextRecognizer:
 
         offset_first_words = top_block_words.query('text.str.len() > 2 and word_num == 1')
 
-        return offset_first_words
+        return offset_first_words.sort_index()
 
     def get_offset_first_words_alt(self):
         '''
