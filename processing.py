@@ -65,15 +65,22 @@ def process_image(image_path, preprocess_mode, language, debug, output_format=Ou
         debug_handler.export_df_to_csv(first_words, 'words')
         debug_handler.export_df_to_csv(all_words, 'all-words')
 
+    result = None
+    result_filename = path.basename(image_path).split('.')[0]
+
     if output_format == OutputFormat.word_list:
         # TODO: return a list of strings
-        return first_words
+        result = first_words
 
     if output_format == OutputFormat.data_frame:
-        return first_words
+        result = first_words
+        result.to_csv(
+            './results/{}.csv'.format(result_filename), index=False)
 
     if output_format == OutputFormat.data_frame_stripped:
-        return first_words.drop(
+        result = first_words.drop(
             columns=['level', 'page_num', 'block_num', 'par_num', 'line_num', 'word_num'])
+        result.to_csv(
+            './results/{}.csv'.format(result_filename), index=False)
 
-    return None
+    return result
