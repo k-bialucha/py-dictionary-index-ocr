@@ -5,7 +5,6 @@ import pandas as pd
 from os import path
 
 from input import parse_arguments
-from processing import process_image, OutputFormat
 
 
 def evaluate():
@@ -27,12 +26,19 @@ def evaluate():
 empty_df = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 
+# define tolerance for matches [pixels]
+X_TOL = 7
+Y_TOL = 12
+
+MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
+
 
 def compare(actual_data, reference_data):
     '''
     Performs comparison between actual and reference data.
     '''
-    true_positives = empty_df.copy()
+    true_positives_act = empty_df.copy()
+    true_positives_ref = empty_df.copy()
     false_negatives = empty_df.copy()
     false_positives = empty_df.copy()
 
@@ -42,14 +48,14 @@ def compare(actual_data, reference_data):
         x_pos = row['left']
         y_pos = row['top']
 
-        query = 'left > {} and left < {} and top > {} and top < {}'.format(
-            x_pos-7, x_pos+7, y_pos-12, y_pos+12)
+        query = MATCH_QUERY.format(
+            x_pos-X_TOL, x_pos+X_TOL, y_pos-Y_TOL, y_pos+Y_TOL)
         matching = actual_data.query(query)
 
         results_count = len(matching.index)
 
         if results_count == 1:
-            true_positives = true_positives.append(row)
+            true_positives_ref = true_positives_ref.append(row)
         elif results_count == 0:
             false_negatives = false_negatives.append(row)
         else:
@@ -58,11 +64,27 @@ def compare(actual_data, reference_data):
 
     # check actual data for matches with reference data
     # and false positives
-    for index, row in actual_data.iterrows():
-        print(row['text'], row['left'], row['top'])
+    for _, row in actual_data.iterrows():
+        x_pos = row['left']
+        y_pos = row['top']
+
+        query = MATCH_QUERY.format(
+            x_pos-X_TOL, x_pos+X_TOL, y_pos-Y_TOL, y_pos+Y_TOL)
+        matching = reference_data.query(query)
+
+        results_count = len(matching.index)
+
+        if results_count == 1:
+            true_positives_act = true_positives_act.append(row)
+        elif results_count == 0:
+            false_positives = false_positives.append(row)
+        else:
+            print('WRONG RESULTS COUNT:', results_count)
+            raise SystemExit('evaluation/compare: invalid result count')
 
     print('============\nRESULTS:')
-    print(true_positives)
+    print(true_positives_ref)
+    print(true_positives_act)
     print(false_negatives)
     print(false_positives)
 
