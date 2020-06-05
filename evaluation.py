@@ -4,6 +4,7 @@ Main module for app's performance evaluation.
 import pandas as pd
 from os import path
 
+from imaging import ImageManipulator
 from input import parse_arguments
 
 
@@ -20,10 +21,29 @@ def evaluate():
     processing_result = pd.read_csv("./results/{}.csv".format(base_name))
     reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
 
-    compare(processing_result, reference_data)
+    (true_positives_act, true_positives_ref, false_positives,
+     false_negatives) = compare(processing_result, reference_data)
+
+    image_manipulator = ImageManipulator(image_path)
+
+    for _, row in true_positives_act.iterrows():
+        print('Marking TP:', row['text'])
+        image_manipulator.mark_word(row, line_color=(50, 180, 50))
+
+    for _, row in false_negatives.iterrows():
+        print('Marking FN:', row['text'])
+        image_manipulator.mark_word(row, line_color=(180, 50, 50))
+
+    for _, row in false_positives.iterrows():
+        print('Marking FP:', row['text'])
+        image_manipulator.mark_word(row, line_color=(50, 50, 180))
+
+    # show image
+    # TODO: save image
+    image_manipulator.show(show_marked=True)
 
 
-empty_df = pd.DataFrame(
+EMPTY_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 
 # define tolerance for matches [pixels]
@@ -37,10 +57,10 @@ def compare(actual_data, reference_data):
     '''
     Performs comparison between actual and reference data.
     '''
-    true_positives_act = empty_df.copy()
-    true_positives_ref = empty_df.copy()
-    false_negatives = empty_df.copy()
-    false_positives = empty_df.copy()
+    true_positives_act = EMPTY_DF.copy()
+    true_positives_ref = EMPTY_DF.copy()
+    false_negatives = EMPTY_DF.copy()
+    false_positives = EMPTY_DF.copy()
 
     # check reference data for matches with actual data
     # and false negatives
@@ -82,11 +102,7 @@ def compare(actual_data, reference_data):
             print('WRONG RESULTS COUNT:', results_count)
             raise SystemExit('evaluation/compare: invalid result count')
 
-    print('============\nRESULTS:')
-    print(true_positives_ref)
-    print(true_positives_act)
-    print(false_negatives)
-    print(false_positives)
+    return (true_positives_act, true_positives_ref, false_positives, false_negatives)
 
 
 if __name__ == "__main__":
