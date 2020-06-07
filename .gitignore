@@ -1,5 +1,7 @@
 # program debug data
 debug/
+# program input data | not neeeded to keep in repository
+input/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
