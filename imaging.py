@@ -98,19 +98,20 @@ class ImageManipulator:
 
     def __init__(self, image_path):
         self.image = cv2.imread(image_path)
-        self.image_preprocessed_filename = "{}.png".format(os.getpid())
 
         self.pil_image = Image.open(image_path)
         self.draw = ImageDraw.Draw(self.pil_image)
 
     def __del__(self):
-        os.remove(self.image_preprocessed_filename)
+        if self.image_preprocessed_filename is not None:
+            os.remove(self.image_preprocessed_filename)
 
     def preprocess_image(self, preprocess_mode):
         '''
         Applies image processing.
         Aims for recognition quality improvement.
         '''
+        self.image_preprocessed_filename = "{}.png".format(os.getpid())
         image_gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
         # check to see if we should apply thresholding to preprocess the image
