@@ -7,10 +7,13 @@ from os import path
 from imaging import ImageManipulator
 from input import parse_arguments
 
+TP_WEIGHT = 100
+FN_WEIGHT = 100
+FP_WEIGHT = 60
 
 def evaluate():
     '''
-    Execute full recognition process
+    Execute an evaluation process per one picture
     '''
     args = parse_arguments()
 
@@ -42,13 +45,19 @@ def evaluate():
     # TODO: save image
     image_manipulator.show(show_marked=True)
 
+    tp_len = len(true_positives_act.index)
+    fn_len = len(false_negatives.index)
+    fp_len = len(false_positives.index)
+    ranking = (tp_len * TP_WEIGHT - fn_len * FN_WEIGHT - fp_len * FP_WEIGHT) / (tp_len + fp_len)
+    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format( tp_len, fn_len, fp_len, ranking))
+
 
 EMPTY_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 
 # define tolerance for matches [pixels]
-X_TOL = 7
-Y_TOL = 12
+X_TOL = 15
+Y_TOL = 25
 
 MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
 
