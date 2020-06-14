@@ -11,68 +11,14 @@ TP_WEIGHT = 100
 FN_WEIGHT = 100
 FP_WEIGHT = 60
 
-
-def evaluate_all():
-    '''
-    Run evaluation process for all specified file.
-    '''
-    args = parse_evaluation_arguments()
-
-    names = args['names']
-    debug = args['debug']
-
-    for name in names:
-        evaluate_image(name, debug)
-
-
-def evaluate_image(base_name, debug):
-    '''
-    Execute an evaluation process per one picture
-    '''
-
-    image_path = "./input/{}.png".format(base_name)
-    processing_result = pd.read_csv("./results/{}.csv".format(base_name))
-    reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
-
-    (true_positives_act, true_positives_ref, false_positives,
-     false_negatives) = compare(processing_result, reference_data)
-
-    if debug:
-        image_manipulator = ImageManipulator(image_path)
-
-        for _, row in true_positives_act.iterrows():
-            print('Marking TP:', row['text'])
-            image_manipulator.mark_word(row, line_color=(50, 180, 50))
-
-        for _, row in false_negatives.iterrows():
-            print('Marking FN:', row['text'])
-            image_manipulator.mark_word(row, line_color=(180, 50, 50))
-
-        for _, row in false_positives.iterrows():
-            print('Marking FP:', row['text'])
-            image_manipulator.mark_word(row, line_color=(50, 50, 180))
-
-        # show image
-        # TODO: save image
-        image_manipulator.show(show_marked=True)
-
-    tp_len = len(true_positives_act.index)
-    fn_len = len(false_negatives.index)
-    fp_len = len(false_positives.index)
-    ranking = (tp_len * TP_WEIGHT - fn_len * FN_WEIGHT -
-               fp_len * FP_WEIGHT) / (tp_len + fp_len)
-    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format(
-        tp_len, fn_len, fp_len, ranking))
-
-
-EMPTY_DF = pd.DataFrame(
-    columns=['left', 'top', 'width', 'height', 'conf', 'text'])
-
 # define tolerance for matches [pixels]
 X_TOL = 15
 Y_TOL = 25
 
 MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
+
+EMPTY_DF = pd.DataFrame(
+    columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 
 
 def compare(actual_data, reference_data):
@@ -126,6 +72,57 @@ def compare(actual_data, reference_data):
 
     return (true_positives_act, true_positives_ref, false_positives, false_negatives)
 
+
+def evaluate_page(base_name, debug):
+    '''
+    Execute an evaluation process per one picture
+    '''
+
+    image_path = "./input/{}.png".format(base_name)
+    processing_result = pd.read_csv("./results/{}.csv".format(base_name))
+    reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
+
+    (true_positives_act, true_positives_ref, false_positives,
+     false_negatives) = compare(processing_result, reference_data)
+
+    if debug:
+        image_manipulator = ImageManipulator(image_path)
+
+        for _, row in true_positives_act.iterrows():
+            print('Marking TP:', row['text'])
+            image_manipulator.mark_word(row, line_color=(50, 180, 50))
+
+        for _, row in false_negatives.iterrows():
+            print('Marking FN:', row['text'])
+            image_manipulator.mark_word(row, line_color=(180, 50, 50))
+
+        for _, row in false_positives.iterrows():
+            print('Marking FP:', row['text'])
+            image_manipulator.mark_word(row, line_color=(50, 50, 180))
+
+        # show image
+        # TODO: save image
+        image_manipulator.show(show_marked=True)
+
+    tp_len = len(true_positives_act.index)
+    fn_len = len(false_negatives.index)
+    fp_len = len(false_positives.index)
+    ranking = (tp_len * TP_WEIGHT - fn_len * FN_WEIGHT -
+               fp_len * FP_WEIGHT) / (tp_len + fp_len)
+    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format(
+        tp_len, fn_len, fp_len, ranking))
+
+def evaluate_all():
+    '''
+    Run evaluation process for all specified file.
+    '''
+    args = parse_evaluation_arguments()
+
+    names = args['names']
+    debug = args['debug']
+
+    for name in names:
+        evaluate_page(name, debug)
 
 if __name__ == "__main__":
     evaluate_all()
