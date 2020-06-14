@@ -5,22 +5,31 @@ import pandas as pd
 from os import path
 
 from imaging import ImageManipulator
-from input import parse_arguments
+from input import parse_evaluation_arguments
 
 TP_WEIGHT = 100
 FN_WEIGHT = 100
 FP_WEIGHT = 60
 
-def evaluate():
+
+def evaluate_all():
+    '''
+    Run evaluation process for all specified file.
+    '''
+    args = parse_evaluation_arguments()
+
+    names = args['names']
+
+    for name in names:
+        evaluate_image(name)
+
+
+def evaluate_image(base_name):
     '''
     Execute an evaluation process per one picture
     '''
-    args = parse_arguments()
 
-    image_path = args['image'][0]
-
-    base_name = path.basename(image_path).split('.')[0]
-
+    image_path = "./input/{}.png".format(base_name)
     processing_result = pd.read_csv("./results/{}.csv".format(base_name))
     reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
 
@@ -48,8 +57,10 @@ def evaluate():
     tp_len = len(true_positives_act.index)
     fn_len = len(false_negatives.index)
     fp_len = len(false_positives.index)
-    ranking = (tp_len * TP_WEIGHT - fn_len * FN_WEIGHT - fp_len * FP_WEIGHT) / (tp_len + fp_len)
-    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format( tp_len, fn_len, fp_len, ranking))
+    ranking = (tp_len * TP_WEIGHT - fn_len * FN_WEIGHT -
+               fp_len * FP_WEIGHT) / (tp_len + fp_len)
+    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format(
+        tp_len, fn_len, fp_len, ranking))
 
 
 EMPTY_DF = pd.DataFrame(
@@ -115,4 +126,4 @@ def compare(actual_data, reference_data):
 
 
 if __name__ == "__main__":
-    evaluate()
+    evaluate_all()
