@@ -1,7 +1,7 @@
 '''
 App's main module.
 '''
-from input import parse_arguments
+from input import parse_main_arguments
 from processing import process_image
 
 
@@ -9,7 +9,7 @@ def main():
     '''
     Execute full recognition process
     '''
-    args = parse_arguments()
+    args = parse_main_arguments()
 
     image_paths = args['image']
     preprocess_mode = args['preprocess']

@@ -4,7 +4,7 @@ Module for parsing app entry arguments.
 import argparse
 
 
-def parse_arguments():
+def parse_main_arguments():
     '''
     Parses provided arguments.
 
@@ -12,6 +12,7 @@ def parse_arguments():
     image: image path
     preprocess: type of preprocessing
     lang: recognition language
+    debug: whether to display debug data
     '''
     arg_parser = argparse.ArgumentParser()
 
@@ -24,7 +25,27 @@ def parse_arguments():
     arg_parser.add_argument("-l", "--lang", type=str, default="deu+frk",
                             help="set language of recognition")
 
-    arg_parser.add_argument('--default', dest='debug', action='store_true')
+    arg_parser.add_argument('--no-debug', dest='debug', action='store_false')
+    arg_parser.set_defaults(debug=True)
+
+    args = vars(arg_parser.parse_args())
+
+    return args
+
+
+def parse_evaluation_arguments():
+    '''
+    Parses provided arguments.
+
+    Returns object:
+    names: list of names
+    debug: whether to display debug data
+    '''
+    arg_parser = argparse.ArgumentParser()
+
+    arg_parser.add_argument('names', metavar='name', type=str, nargs='+',
+                            help='a list of names for evaluation')
+
     arg_parser.add_argument('--no-debug', dest='debug', action='store_false')
     arg_parser.set_defaults(debug=True)
 
