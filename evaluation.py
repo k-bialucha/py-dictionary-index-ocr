@@ -19,12 +19,13 @@ def evaluate_all():
     args = parse_evaluation_arguments()
 
     names = args['names']
+    debug = args['debug']
 
     for name in names:
-        evaluate_image(name)
+        evaluate_image(name, debug)
 
 
-def evaluate_image(base_name):
+def evaluate_image(base_name, debug):
     '''
     Execute an evaluation process per one picture
     '''
@@ -36,23 +37,24 @@ def evaluate_image(base_name):
     (true_positives_act, true_positives_ref, false_positives,
      false_negatives) = compare(processing_result, reference_data)
 
-    image_manipulator = ImageManipulator(image_path)
+    if debug:
+        image_manipulator = ImageManipulator(image_path)
 
-    for _, row in true_positives_act.iterrows():
-        print('Marking TP:', row['text'])
-        image_manipulator.mark_word(row, line_color=(50, 180, 50))
+        for _, row in true_positives_act.iterrows():
+            print('Marking TP:', row['text'])
+            image_manipulator.mark_word(row, line_color=(50, 180, 50))
 
-    for _, row in false_negatives.iterrows():
-        print('Marking FN:', row['text'])
-        image_manipulator.mark_word(row, line_color=(180, 50, 50))
+        for _, row in false_negatives.iterrows():
+            print('Marking FN:', row['text'])
+            image_manipulator.mark_word(row, line_color=(180, 50, 50))
 
-    for _, row in false_positives.iterrows():
-        print('Marking FP:', row['text'])
-        image_manipulator.mark_word(row, line_color=(50, 50, 180))
+        for _, row in false_positives.iterrows():
+            print('Marking FP:', row['text'])
+            image_manipulator.mark_word(row, line_color=(50, 50, 180))
 
-    # show image
-    # TODO: save image
-    image_manipulator.show(show_marked=True)
+        # show image
+        # TODO: save image
+        image_manipulator.show(show_marked=True)
 
     tp_len = len(true_positives_act.index)
     fn_len = len(false_negatives.index)
