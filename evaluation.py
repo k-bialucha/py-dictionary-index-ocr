@@ -2,12 +2,11 @@
 Main module for app's performance evaluation.
 '''
 import pandas as pd
-from os import path
 
 from imaging import ImageManipulator
 from input import parse_evaluation_arguments
 
-TP_WEIGHT = 100
+POS_WEIGHT = 100
 FN_WEIGHT = 100
 FP_WEIGHT = 60
 
@@ -70,20 +69,44 @@ def compare(actual_data, reference_data):
             print('WRONG RESULTS COUNT:', results_count)
             raise SystemExit('evaluation/compare: invalid result count')
 
-    return (true_positives_act, true_positives_ref, false_positives, false_negatives)
+    return (true_positives_act, true_positives_ref, false_negatives, false_positives)
+
+
+def calculate_ranking(true_pos_count, false_neg_count, false_pos_count):
+    '''
+    Calculates the ranking based on TP/FN/FP count.
+    '''
+    all_positives_count = true_pos_count + false_neg_count
+
+    return (all_positives_count * POS_WEIGHT - false_neg_count * FN_WEIGHT -
+            false_pos_count * FP_WEIGHT) / (all_positives_count)
+
+
+def print_ranking(true_positives, false_negatives, false_positives):
+    '''
+    Prints a summary of entered data and calculated ranking.
+    '''
+    true_pos_count = len(true_positives.index)
+    false_neg_count = len(false_negatives.index)
+    false_pos_count = len(false_positives.index)
+
+    ranking = calculate_ranking(
+        true_pos_count, false_neg_count, false_pos_count)
+
+    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format(
+        true_pos_count, false_neg_count, false_pos_count, round(ranking, 3)))
 
 
 def evaluate_page(base_name, debug):
     '''
     Execute an evaluation process per one picture
     '''
-
     image_path = "./input/{}.png".format(base_name)
     processing_result = pd.read_csv("./results/{}.csv".format(base_name))
     reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
 
-    (true_positives_act, true_positives_ref, false_positives,
-     false_negatives) = compare(processing_result, reference_data)
+    (true_positives_act, true_positives_ref, false_negatives,
+     false_positives) = compare(processing_result, reference_data)
 
     if debug:
         image_manipulator = ImageManipulator(image_path)
@@ -104,13 +127,10 @@ def evaluate_page(base_name, debug):
         # TODO: save image
         image_manipulator.show(show_marked=True)
 
-    tp_len = len(true_positives_act.index)
-    fn_len = len(false_negatives.index)
-    fp_len = len(false_positives.index)
-    ranking = (tp_len * TP_WEIGHT - fn_len * FN_WEIGHT -
-               fp_len * FP_WEIGHT) / (tp_len + fp_len)
-    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format(
-        tp_len, fn_len, fp_len, ranking))
+    print_ranking(true_positives_act, false_negatives, false_positives)
+
+    return (true_positives_act, true_positives_ref, false_negatives, false_positives)
+
 
 def evaluate_all():
     '''
@@ -121,8 +141,20 @@ def evaluate_all():
     names = args['names']
     debug = args['debug']
 
+    all_true_pos = EMPTY_DF.copy()
+    all_false_neg = EMPTY_DF.copy()
+    all_false_pos = EMPTY_DF.copy()
+
     for name in names:
-        evaluate_page(name, debug)
+        (true_positives_act, _, false_negatives,
+         false_positives) = evaluate_page(name, debug)
+
+        all_true_pos = pd.concat([all_true_pos, true_positives_act])
+        all_false_neg = pd.concat([all_false_neg, false_negatives])
+        all_false_pos = pd.concat([all_false_pos, false_positives])
+
+    print_ranking(all_true_pos, all_false_neg, all_false_pos)
+
 
 if __name__ == "__main__":
     evaluate_all()
