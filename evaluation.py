@@ -19,6 +19,15 @@ MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
 EMPTY_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 
+def calculate_word_similarity(word_act, word_ref):
+    '''
+    Calculate similarity between 2 words.
+    '''
+    len_act = len(word_act)
+    len_ref = len(word_ref)
+    similarity = round(1 - abs((len_act - len_ref)) / len_ref, 3)
+
+    return similarity
 
 def compare(actual_data, reference_data):
     '''
@@ -68,8 +77,7 @@ def compare(actual_data, reference_data):
             text_ref = matching.iloc[0]['text']
 
             row['text_ref'] = text_ref
-            row['sim'] = round(
-                1 - abs((len(text_act) - len(text_ref))) / len(text_ref), 3)
+            row['sim'] = calculate_word_similarity(text_act, text_ref)
 
             true_positives = true_positives.append(row)
         elif results_count == 0:
