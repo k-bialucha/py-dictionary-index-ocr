@@ -24,8 +24,10 @@ def compare(actual_data, reference_data):
     '''
     Performs comparison between actual and reference data.
     '''
-    true_positives_act = EMPTY_DF.copy()
-    true_positives_ref = EMPTY_DF.copy()
+    true_positives = EMPTY_DF.copy()
+    true_positives.insert(len(true_positives.columns), 'text_ref', [], True)
+    true_positives.insert(len(true_positives.columns), 'sim', [], True)
+
     false_negatives = EMPTY_DF.copy()
     false_positives = EMPTY_DF.copy()
 
@@ -42,7 +44,7 @@ def compare(actual_data, reference_data):
         results_count = len(matching.index)
 
         if results_count == 1:
-            true_positives_ref = true_positives_ref.append(row)
+            pass
         elif results_count == 0:
             false_negatives = false_negatives.append(row)
         else:
@@ -62,14 +64,21 @@ def compare(actual_data, reference_data):
         results_count = len(matching.index)
 
         if results_count == 1:
-            true_positives_act = true_positives_act.append(row)
+            text_act = row['text']
+            text_ref = matching.iloc[0]['text']
+
+            row['text_ref'] = text_ref
+            row['sim'] = round(
+                1 - abs((len(text_act) - len(text_ref))) / len(text_ref), 3)
+
+            true_positives = true_positives.append(row)
         elif results_count == 0:
             false_positives = false_positives.append(row)
         else:
             print('WRONG RESULTS COUNT:', results_count)
             raise SystemExit('evaluation/compare: invalid result count')
 
-    return (true_positives_act, true_positives_ref, false_negatives, false_positives)
+    return (true_positives, false_negatives, false_positives)
 
 
 def calculate_ranking(true_pos_count, false_neg_count, false_pos_count):
@@ -93,7 +102,7 @@ def print_ranking(true_positives, false_negatives, false_positives):
     ranking = calculate_ranking(
         true_pos_count, false_neg_count, false_pos_count)
 
-    print('[TP: {}, FN: {}, FP: {}, ranking: {}]'.format(
+    print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} ]'.format(
         true_pos_count, false_neg_count, false_pos_count, round(ranking, 3)))
 
 
@@ -105,13 +114,13 @@ def evaluate_page(base_name, debug):
     processing_result = pd.read_csv("./results/{}.csv".format(base_name))
     reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
 
-    (true_positives_act, true_positives_ref, false_negatives,
-     false_positives) = compare(processing_result, reference_data)
+    (true_positives, false_negatives, false_positives) = compare(
+        processing_result, reference_data)
 
     if debug:
         image_manipulator = ImageManipulator(image_path)
 
-        for _, row in true_positives_act.iterrows():
+        for _, row in true_positives.iterrows():
             print('Marking TP:', row['text'])
             image_manipulator.mark_word(row, line_color=(50, 180, 50))
 
@@ -127,9 +136,9 @@ def evaluate_page(base_name, debug):
         # TODO: save image
         image_manipulator.show(show_marked=True)
 
-    print_ranking(true_positives_act, false_negatives, false_positives)
+    print_ranking(true_positives, false_negatives, false_positives)
 
-    return (true_positives_act, true_positives_ref, false_negatives, false_positives)
+    return (true_positives, false_negatives, false_positives)
 
 
 def evaluate_all():
@@ -146,10 +155,10 @@ def evaluate_all():
     all_false_pos = EMPTY_DF.copy()
 
     for name in names:
-        (true_positives_act, _, false_negatives,
+        (true_positives, false_negatives,
          false_positives) = evaluate_page(name, debug)
 
-        all_true_pos = pd.concat([all_true_pos, true_positives_act])
+        all_true_pos = pd.concat([all_true_pos, true_positives])
         all_false_neg = pd.concat([all_false_neg, false_negatives])
         all_false_pos = pd.concat([all_false_pos, false_positives])
 
