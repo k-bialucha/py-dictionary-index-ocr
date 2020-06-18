@@ -19,15 +19,6 @@ MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
 EMPTY_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 
-def calculate_word_similarity(word_act, word_ref):
-    '''
-    Calculate similarity between 2 words.
-    '''
-    len_act = len(word_act)
-    len_ref = len(word_ref)
-    similarity = round(1 - abs((len_act - len_ref)) / len_ref, 3)
-
-    return similarity
 
 def compare(actual_data, reference_data):
     '''
@@ -87,6 +78,48 @@ def compare(actual_data, reference_data):
             raise SystemExit('evaluation/compare: invalid result count')
 
     return (true_positives, false_negatives, false_positives)
+
+
+def calculate_levenshtein_distance(word_base, word_comp):
+    '''
+    Calculate Levenshtein distance between 2 words.
+    '''
+    size_m = len(word_base)
+    size_n = len(word_comp)
+
+    results = [[None for x in range(size_n + 1)]
+               for y in range(size_m + 1)]
+
+    for i in range(size_m + 1):
+        results[i][0] = i
+    for j in range(size_n + 1):
+        results[0][j] = j
+
+    for i in list(map((lambda x: x+1), range(size_m))):
+        for j in list(map((lambda x: x+1), range(size_n))):
+            if word_base[i - 1] == word_comp[j - 1]:
+                letter_change_cost = 0
+            else:
+                letter_change_cost = 1
+
+            deletion_cost = results[i - 1][j] + 1
+            insertion_cost = results[i][j - 1] + 1
+            replacement_cost = results[i - 1][j - 1] + letter_change_cost
+
+            results[i][j] = min(
+                deletion_cost, insertion_cost, replacement_cost)
+
+    return results[size_m][size_n]
+
+
+def calculate_word_similarity(word_act, word_ref):
+    '''
+    Calculate similarity between 2 words.
+    '''
+    len_act = len(word_act)
+    len_ref = len(word_ref)
+    similarity = round(1 - abs((len_act - len_ref)) / len_ref, 3)
+    return similarity
 
 
 def calculate_ranking(true_pos_count, false_neg_count, false_pos_count):
@@ -170,8 +203,12 @@ def evaluate_all():
         all_false_neg = pd.concat([all_false_neg, false_negatives])
         all_false_pos = pd.concat([all_false_pos, false_positives])
 
+    # print('\n=====\nfinal ranking:', all_false_neg)
     print_ranking(all_true_pos, all_false_neg, all_false_pos)
 
 
 if __name__ == "__main__":
-    evaluate_all()
+    # evaluate_all()
+    # print("ranking:",calculate_ranking(60, 9, 17))
+    # calculate_levenshtein_distance('pulpet', 'pluet')
+    calculate_levenshtein_distance('marka', 'ariada')
