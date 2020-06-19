@@ -138,7 +138,7 @@ def calculate_ranking(true_pos_count: int, false_neg_count: int, false_pos_count
             false_pos_count * FP_WEIGHT) / (all_positives_count)
 
 
-def print_ranking(true_positives, false_negatives, false_positives):
+def print_ranking(true_positives, false_negatives, false_positives, title=None):
     '''
     Prints a summary of entered data and calculated ranking.
     '''
@@ -150,6 +150,9 @@ def print_ranking(true_positives, false_negatives, false_positives):
 
     ranking = calculate_ranking(
         true_pos_count, false_neg_count, false_pos_count, similarity_mean)
+
+    if title is not None:
+        print('\n{}'.format(title))
 
     print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} ]'.format(
         true_pos_count, false_neg_count, false_pos_count, round(ranking, 3)))
@@ -185,7 +188,7 @@ def evaluate_page(base_name, debug):
         # TODO: save image
         image_manipulator.show(show_marked=True)
 
-    print_ranking(true_positives, false_negatives, false_positives)
+    print_ranking(true_positives, false_negatives, false_positives, base_name)
 
     return (true_positives, false_negatives, false_positives)
 
@@ -211,12 +214,8 @@ def evaluate_all():
         all_false_neg = pd.concat([all_false_neg, false_negatives])
         all_false_pos = pd.concat([all_false_pos, false_positives])
 
-    # print('\n=====\nfinal ranking:', all_false_neg)
-    print_ranking(all_true_pos, all_false_neg, all_false_pos)
+    print_ranking(all_true_pos, all_false_neg, all_false_pos, "TOTAL RESULT")
 
 
 if __name__ == "__main__":
-    # evaluate_all()
-    # print("ranking:",calculate_ranking(60, 9, 17))
-    # calculate_levenshtein_distance('pulpet', 'pluet')
-    calculate_levenshtein_distance('marka', 'ariada')
+    evaluate_all()
