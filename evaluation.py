@@ -1,6 +1,7 @@
 '''
 Main module for app's performance evaluation.
 '''
+from statistics import mean
 import pandas as pd
 
 from imaging import ImageManipulator
@@ -112,23 +113,28 @@ def calculate_levenshtein_distance(word_base, word_comp):
     return results[size_m][size_n]
 
 
-def calculate_word_similarity(word_act, word_ref):
+def calculate_word_similarity(word_act: str, word_ref: str):
     '''
     Calculate similarity between 2 words.
     '''
     len_act = len(word_act)
     len_ref = len(word_ref)
-    similarity = round(1 - abs((len_act - len_ref)) / len_ref, 3)
+
+    distance = calculate_levenshtein_distance(word_act, word_ref)
+
+    similarity = round(1 - distance / len_ref, 3)
+
     return similarity
 
 
-def calculate_ranking(true_pos_count, false_neg_count, false_pos_count):
+def calculate_ranking(true_pos_count: int, false_neg_count: int, false_pos_count: int, similarity_mean: float):
     '''
     Calculates the ranking based on TP/FN/FP count.
     '''
     all_positives_count = true_pos_count + false_neg_count
+    adjusted_positives_count = true_pos_count * similarity_mean + false_neg_count
 
-    return (all_positives_count * POS_WEIGHT - false_neg_count * FN_WEIGHT -
+    return (adjusted_positives_count * POS_WEIGHT - false_neg_count * FN_WEIGHT -
             false_pos_count * FP_WEIGHT) / (all_positives_count)
 
 
@@ -140,8 +146,10 @@ def print_ranking(true_positives, false_negatives, false_positives):
     false_neg_count = len(false_negatives.index)
     false_pos_count = len(false_positives.index)
 
+    similarity_mean = mean(true_positives['sim'])
+
     ranking = calculate_ranking(
-        true_pos_count, false_neg_count, false_pos_count)
+        true_pos_count, false_neg_count, false_pos_count, similarity_mean)
 
     print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} ]'.format(
         true_pos_count, false_neg_count, false_pos_count, round(ranking, 3)))
