@@ -2,8 +2,9 @@
 Module for transforming input image
 to a final output.
 '''
-from os import path
 from enum import Enum
+from os import path
+from pathlib import Path
 
 from debug import DebugHandler
 from imaging import ImageManipulator
@@ -20,7 +21,7 @@ class OutputFormat(Enum):
     data_frame_stripped = 3
 
 
-def process_image(image_path, preprocess_mode, language, debug, output_format=OutputFormat.data_frame):
+def process_image(image_path: str, preprocess_mode: str, language: str, debug: bool, config_name: str = None, output_format=OutputFormat.data_frame):
     '''
     Function that handles processing of a single image
 
@@ -68,19 +69,26 @@ def process_image(image_path, preprocess_mode, language, debug, output_format=Ou
     result = None
     result_filename = path.basename(image_path).split('.')[0]
 
+    if config_name is not None:
+        Path("./results/{}".format(config_name)
+             ).mkdir(parents=True, exist_ok=True)
+
+        result_path = './results/{}/{}.csv'.format(
+            config_name, result_filename)
+    else:
+        result_path = './results/{}.csv'.format(result_filename)
+
     if output_format == OutputFormat.word_list:
         # TODO: return a list of strings
         result = first_words
 
     if output_format == OutputFormat.data_frame:
         result = first_words
-        result.to_csv(
-            './results/{}.csv'.format(result_filename), index=False)
+        result.to_csv(result_path, index=False)
 
     if output_format == OutputFormat.data_frame_stripped:
         result = first_words.drop(
             columns=['level', 'page_num', 'block_num', 'par_num', 'line_num', 'word_num'])
-        result.to_csv(
-            './results/{}.csv'.format(result_filename), index=False)
+        result.to_csv(result_path, index=False)
 
     return result

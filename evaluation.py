@@ -158,12 +158,16 @@ def print_ranking(true_positives, false_negatives, false_positives, title=None):
         true_pos_count, false_neg_count, false_pos_count, round(ranking, 3)))
 
 
-def evaluate_page(base_name, debug):
+def evaluate_page(base_name: str, debug: bool, config_name: str):
     '''
     Execute an evaluation process per one picture
     '''
     image_path = "./input/{}.png".format(base_name)
-    processing_result = pd.read_csv("./results/{}.csv".format(base_name))
+    if config_name is not None:
+        processing_result = pd.read_csv(
+            "./results/{}/{}.csv".format(config_name, base_name))
+    else:
+        processing_result = pd.read_csv("./results/{}.csv".format(base_name))
     reference_data = pd.read_csv("./reference_data/{}.csv".format(base_name))
 
     (true_positives, false_negatives, false_positives) = compare(
@@ -201,6 +205,7 @@ def evaluate_all():
 
     names = args['names']
     debug = args['debug']
+    config_name = args['config_name']
 
     all_true_pos = EMPTY_DF.copy()
     all_false_neg = EMPTY_DF.copy()
@@ -208,7 +213,7 @@ def evaluate_all():
 
     for name in names:
         (true_positives, false_negatives,
-         false_positives) = evaluate_page(name, debug)
+         false_positives) = evaluate_page(name, debug, config_name)
 
         all_true_pos = pd.concat([all_true_pos, true_positives])
         all_false_neg = pd.concat([all_false_neg, false_negatives])

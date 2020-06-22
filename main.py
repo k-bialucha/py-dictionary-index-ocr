@@ -11,13 +11,16 @@ def main():
     '''
     args = parse_main_arguments()
 
-    image_paths = args['image']
+    names = args['names']
     preprocess_mode = args['preprocess']
+    config_name = args['config_name']
     debug = args['debug']
     language = args['lang']
 
-    for image_path in image_paths:
-        processing_result = process_image(image_path, preprocess_mode, language, debug)
+    paths = map('./input/{}.png'.format, names)
+
+    for image_path in paths:
+        processing_result = process_image(image_path, preprocess_mode, language, debug, config_name)
         print("==========\nResults:\n")
         print(processing_result)
 

@@ -9,15 +9,19 @@ def parse_main_arguments():
     Parses provided arguments.
 
     Returns object:
-    image: image path
+    names: image names
+    config_name: name prefix
     preprocess: type of preprocessing
     lang: recognition language
     debug: whether to display debug data
     '''
     arg_parser = argparse.ArgumentParser()
 
-    arg_parser.add_argument("-i", "--image", required=True, nargs="+",
-                            help="path to input image to be recognized")
+    arg_parser.add_argument('names', metavar='name', type=str, nargs='+',
+                            help='a list of names for input')
+
+    arg_parser.add_argument("-cn", "--config-name", type=str, default=None,
+                            help="a config name for saving results")
 
     arg_parser.add_argument("-p", "--preprocess", type=str, default="thresh",
                             help="type of preprocessing to be done")
@@ -39,12 +43,16 @@ def parse_evaluation_arguments():
 
     Returns object:
     names: list of names
+    config_name: name prefix
     debug: whether to display debug data
     '''
     arg_parser = argparse.ArgumentParser()
 
     arg_parser.add_argument('names', metavar='name', type=str, nargs='+',
                             help='a list of names for evaluation')
+
+    arg_parser.add_argument("-cn", "--config-name", type=str, default=None,
+                            help="a config name for saving results")
 
     arg_parser.add_argument('--no-debug', dest='debug', action='store_false')
     arg_parser.set_defaults(debug=True)
