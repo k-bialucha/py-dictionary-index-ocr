@@ -12,7 +12,7 @@ FN_WEIGHT = 100
 FP_WEIGHT = 60
 
 # define tolerance for matches [pixels]
-X_TOL = 15
+X_TOL = 65
 Y_TOL = 25
 
 MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
@@ -27,6 +27,7 @@ def compare(actual_data, reference_data):
     '''
     true_positives = EMPTY_DF.copy()
     true_positives.insert(len(true_positives.columns), 'text_ref', [], True)
+    true_positives.insert(len(true_positives.columns), 'dist', [], True)
     true_positives.insert(len(true_positives.columns), 'sim', [], True)
 
     false_negatives = EMPTY_DF.copy()
@@ -69,7 +70,11 @@ def compare(actual_data, reference_data):
             text_ref = matching.iloc[0]['text']
 
             row['text_ref'] = text_ref
-            row['sim'] = calculate_word_similarity(text_act, text_ref)
+
+            (similarity, distance) = calculate_word_similarity(text_act, text_ref)
+
+            row['sim'] = similarity
+            row['dist'] = distance
 
             true_positives = true_positives.append(row)
         elif results_count == 0:
@@ -113,18 +118,17 @@ def calculate_levenshtein_distance(word_base, word_comp):
     return results[size_m][size_n]
 
 
-def calculate_word_similarity(word_act: str, word_ref: str):
+def calculate_word_similarity(word_act: str, word_ref: str) -> (float, int):
     '''
     Calculate similarity between 2 words.
     '''
-    len_act = len(word_act)
     len_ref = len(word_ref)
 
     distance = calculate_levenshtein_distance(word_act, word_ref)
 
     similarity = round(1 - distance / len_ref, 3)
 
-    return similarity
+    return (similarity, distance)
 
 
 def calculate_ranking(true_pos_count: int, false_neg_count: int, false_pos_count: int, similarity_mean: float):
@@ -147,6 +151,7 @@ def print_ranking(true_positives, false_negatives, false_positives, title=None):
     false_pos_count = len(false_positives.index)
 
     similarity_mean = mean(true_positives['sim'])
+    perfect_cases = len(true_positives[true_positives['dist'] == 0].index)
 
     ranking = calculate_ranking(
         true_pos_count, false_neg_count, false_pos_count, similarity_mean)
@@ -154,8 +159,8 @@ def print_ranking(true_positives, false_negatives, false_positives, title=None):
     if title is not None:
         print('\n{}'.format(title))
 
-    print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} ]'.format(
-        true_pos_count, false_neg_count, false_pos_count, round(ranking, 3)))
+    print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} | sim mean: {:5.3f} | perf cases: {:3} ]'.format(
+        true_pos_count, false_neg_count, false_pos_count, ranking, similarity_mean, perfect_cases))
 
 
 def evaluate_page(base_name: str, debug: bool, config_name: str):
@@ -177,7 +182,9 @@ def evaluate_page(base_name: str, debug: bool, config_name: str):
         image_manipulator = ImageManipulator(image_path)
 
         for _, row in true_positives.iterrows():
-            print('Marking TP:', row['text'])
+            word = '{} ({})'.format(row['text'], row['text_ref'])
+            row['text'] = word
+            print('Marking TP:', word)
             image_manipulator.mark_word(row, line_color=(50, 180, 50))
 
         for _, row in false_negatives.iterrows():
