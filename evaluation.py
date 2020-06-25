@@ -17,21 +17,23 @@ Y_TOL = 25
 
 MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
 
-EMPTY_DF = pd.DataFrame(
+EMPTY_DATA_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
+EMPTY_RESULTS_DF = pd.DataFrame(
+    columns=['name', 'TP', 'FN', 'FP', 'ranking', 'sim_mean', 'perf_cases'])
 
 
 def compare(actual_data, reference_data):
     '''
     Performs comparison between actual and reference data.
     '''
-    true_positives = EMPTY_DF.copy()
+    true_positives = EMPTY_DATA_DF.copy()
     true_positives.insert(len(true_positives.columns), 'text_ref', [], True)
     true_positives.insert(len(true_positives.columns), 'dist', [], True)
     true_positives.insert(len(true_positives.columns), 'sim', [], True)
 
-    false_negatives = EMPTY_DF.copy()
-    false_positives = EMPTY_DF.copy()
+    false_negatives = EMPTY_DATA_DF.copy()
+    false_positives = EMPTY_DATA_DF.copy()
 
     # check reference data for matches with actual data
     # and false negatives
@@ -142,9 +144,9 @@ def calculate_ranking(true_pos_count: int, false_neg_count: int, false_pos_count
             false_pos_count * FP_WEIGHT) / (all_positives_count)
 
 
-def print_ranking(true_positives, false_negatives, false_positives, title=None):
+def create_results(true_positives, false_negatives, false_positives, name):
     '''
-    Prints a summary of entered data and calculated ranking.
+    Creates a results object with evaluation summary.
     '''
     true_pos_count = len(true_positives.index)
     false_neg_count = len(false_negatives.index)
@@ -156,11 +158,27 @@ def print_ranking(true_positives, false_negatives, false_positives, title=None):
     ranking = calculate_ranking(
         true_pos_count, false_neg_count, false_pos_count, similarity_mean)
 
-    if title is not None:
-        print('\n{}'.format(title))
+    results = {}
+    results['name'] = name
+    results['TP'] = true_pos_count
+    results['FN'] = false_neg_count
+    results['FP'] = false_pos_count
+    results['ranking'] = ranking
+    results['sim_mean'] = similarity_mean
+    results['perf_cases'] = perfect_cases
+
+    return results
+
+
+def print_results(results):
+    '''
+    Prints a summary of entered data and calculated ranking.
+    '''
+    if results['name'] is not None:
+        print('\n{}'.format(results['name']))
 
     print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} | sim mean: {:5.3f} | perf cases: {:3} ]'.format(
-        true_pos_count, false_neg_count, false_pos_count, ranking, similarity_mean, perfect_cases))
+        results['TP'], results['FN'], results['FP'], results['ranking'], results['sim_mean'], results['perf_cases']))
 
 
 def evaluate_page(base_name: str, debug: bool, config_name: str):
@@ -199,7 +217,10 @@ def evaluate_page(base_name: str, debug: bool, config_name: str):
         # TODO: save image
         image_manipulator.show(show_marked=True)
 
-    print_ranking(true_positives, false_negatives, false_positives, base_name)
+    results = create_results(
+        true_positives, false_negatives, false_positives, base_name)
+
+    print_results(results)
 
     return (true_positives, false_negatives, false_positives)
 
@@ -214,9 +235,9 @@ def evaluate_all():
     debug = args['debug']
     config_name = args['config_name']
 
-    all_true_pos = EMPTY_DF.copy()
-    all_false_neg = EMPTY_DF.copy()
-    all_false_pos = EMPTY_DF.copy()
+    all_true_pos = EMPTY_DATA_DF.copy()
+    all_false_neg = EMPTY_DATA_DF.copy()
+    all_false_pos = EMPTY_DATA_DF.copy()
 
     for name in names:
         (true_positives, false_negatives,
@@ -226,7 +247,10 @@ def evaluate_all():
         all_false_neg = pd.concat([all_false_neg, false_negatives])
         all_false_pos = pd.concat([all_false_pos, false_positives])
 
-    print_ranking(all_true_pos, all_false_neg, all_false_pos, "TOTAL RESULT")
+    results = create_results(
+        all_true_pos, all_false_neg, all_false_pos, "total")
+
+    print_results(results)
 
 
 if __name__ == "__main__":
