@@ -20,7 +20,7 @@ MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
 EMPTY_DATA_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 EMPTY_RESULTS_DF = pd.DataFrame(
-    columns=['name', 'TP', 'FN', 'FP', 'ranking', 'sim_mean', 'perf_cases'])
+    columns=['name', 'TP', 'FN', 'FP', 'perf_cases', 'sim_mean', 'ranking'])
 
 
 def compare(actual_data, reference_data):
@@ -152,20 +152,20 @@ def create_results(true_positives, false_negatives, false_positives, name):
     false_neg_count = len(false_negatives.index)
     false_pos_count = len(false_positives.index)
 
-    similarity_mean = mean(true_positives['sim'])
+    similarity_mean = round(mean(true_positives['sim']), 3)
     perfect_cases = len(true_positives[true_positives['dist'] == 0].index)
 
-    ranking = calculate_ranking(
-        true_pos_count, false_neg_count, false_pos_count, similarity_mean)
+    ranking = round(calculate_ranking(
+        true_pos_count, false_neg_count, false_pos_count, similarity_mean), 3)
 
     results = {}
     results['name'] = name
     results['TP'] = true_pos_count
     results['FN'] = false_neg_count
     results['FP'] = false_pos_count
-    results['ranking'] = ranking
-    results['sim_mean'] = similarity_mean
     results['perf_cases'] = perfect_cases
+    results['sim_mean'] = similarity_mean
+    results['ranking'] = ranking
 
     return results
 
@@ -222,7 +222,7 @@ def evaluate_page(base_name: str, debug: bool, config_name: str):
 
     print_results(results)
 
-    return (true_positives, false_negatives, false_positives)
+    return (true_positives, false_negatives, false_positives, results)
 
 
 def evaluate_all():
@@ -239,18 +239,25 @@ def evaluate_all():
     all_false_neg = EMPTY_DATA_DF.copy()
     all_false_pos = EMPTY_DATA_DF.copy()
 
+    results_df = EMPTY_RESULTS_DF.copy()
+
     for name in names:
         (true_positives, false_negatives,
-         false_positives) = evaluate_page(name, debug, config_name)
+         false_positives, results) = evaluate_page(name, debug, config_name)
 
         all_true_pos = pd.concat([all_true_pos, true_positives])
         all_false_neg = pd.concat([all_false_neg, false_negatives])
         all_false_pos = pd.concat([all_false_pos, false_positives])
 
-    results = create_results(
-        all_true_pos, all_false_neg, all_false_pos, "total")
+        results_df.loc[len(results_df.index)] = results
 
-    print_results(results)
+    total_results = create_results(
+        all_true_pos, all_false_neg, all_false_pos, "total")
+    results_df.loc[len(results_df.index)] = total_results
+
+    print_results(total_results)
+    results_df.to_csv(
+        './results/{}/evaluation.csv'.format(config_name), index=False)
 
 
 if __name__ == "__main__":
