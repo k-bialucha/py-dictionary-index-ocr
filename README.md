@@ -1,5 +1,7 @@
 # Dictionary index with OCR
 
+[Wersja PL](./README_PL.md).
+
 ## Installation
 
 Activate env:
