@@ -6,6 +6,7 @@ import pytesseract
 from PIL import Image
 import pandas as pd
 
+
 class TextRecognizer:
     '''
     A class which allows to convert image object to text.
@@ -26,7 +27,8 @@ class TextRecognizer:
         '''
         Extracts the text from image.
         '''
-        self.__text = pytesseract.image_to_string(self.image, lang=self.language)
+        self.__text = pytesseract.image_to_string(
+            self.image, lang=self.language)
 
     def get_text(self):
         '''
@@ -39,18 +41,17 @@ class TextRecognizer:
 
     def __extract_boxes(self):
         '''
-        Extracts boxes from image.
-        (needs more exploration)
+        Extracts boxes data from image.
         '''
-        self.__boxes = pytesseract.image_to_boxes(self.image, lang=self.language)
+        self.__boxes = pytesseract.image_to_boxes(
+            self.image, lang=self.language, output_type="dict")
 
     def get_boxes(self):
         '''
-        Returns boxes from image.
-        (needs more exploration)
+        Returns boxes data from image.
         '''
         if self.__boxes is None:
-            self.__extract_text()
+            self.__extract_boxes()
 
         return self.__boxes
 
@@ -111,7 +112,8 @@ class TextRecognizer:
 
         top_block_words = pd.concat([first_block_words, second_block_words])
 
-        offset_first_words = top_block_words.query('text.str.len() > 2 and word_num == 1')
+        offset_first_words = top_block_words.query(
+            'text.str.len() > 2 and word_num == 1')
 
         return offset_first_words.sort_index()
 
