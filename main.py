@@ -1,6 +1,9 @@
 '''
 App's main module.
 '''
+import glob
+import itertools
+
 from input import parse_main_arguments
 from processing import process_image
 
@@ -17,7 +20,9 @@ def main():
     debug = args['debug']
     language = args['lang']
 
-    paths = map('./input/{}.png'.format, names)
+    paths_base = map('./input/{}.png'.format, names)
+    paths_globbed = map(glob.glob, paths_base)
+    paths = list(itertools.chain.from_iterable(paths_globbed))
 
     for image_path in paths:
         processing_result = process_image(image_path, preprocess_mode, language, debug, config_name)
