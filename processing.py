@@ -92,3 +92,25 @@ def process_image(image_path: str, preprocess_mode: str, language: str, debug: b
         result.to_csv(result_path, index=False)
 
     return result
+
+
+def get_page_index(image_name: str):
+    '''
+    Takes an image name and converts it to index
+    using rules based on data structure.
+    '''
+    base_index = int(image_name[-7:-4])
+
+    if base_index <= 22:
+        return None
+
+    if base_index <= 154:
+        return base_index - 22
+
+    if base_index == 155:
+        return '132a'
+
+    if base_index == 156:
+        return '132b'
+
+    return base_index - 24
