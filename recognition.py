@@ -18,6 +18,7 @@ class TextRecognizer:
     __text = None
     __boxes = None
     __data = None
+    __osd = None
 
     def __init__(self, imagePath, language):
         self.image = Image.open(imagePath)
@@ -70,6 +71,22 @@ class TextRecognizer:
             self.__extract_data()
 
         return self.__data
+
+    def __extract_osd(self):
+        '''
+        Extracts a dict containing OSD (screen and dimensions) data for the image.
+        '''
+        self.__osd = pytesseract.image_to_osd(
+            self.image, lang=self.language, output_type="dict")
+
+    def get_osd(self):
+        '''
+        Returns a dict containing OSD (screen and dimensions) data for the image.
+        '''
+        if self.__osd is None:
+            self.__extract_osd()
+
+        return self.__osd
 
     def get_block_offset_breakpoints(self):
         '''
