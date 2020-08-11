@@ -7,6 +7,20 @@ from PIL import Image
 import pandas as pd
 
 
+def clean_word(word: str):
+    '''
+    Takes recognized word and cleans trailing comma sign if exists.
+    '''
+    if not isinstance(word, str):
+        return word
+
+    if word[-1] == ',':
+        cleaned_word = word[0:-1]
+        return cleaned_word
+
+    return word
+
+
 class TextRecognizer:
     '''
     A class which allows to convert image object to text.
@@ -119,9 +133,13 @@ class TextRecognizer:
         Extracts first word data using one of two methods.
         '''
         if self.method == 2:
-            return self.__get_offset_first_words_alt()
+            data = self.__get_offset_first_words_alt()
+        else:
+            data = self.__get_offset_first_words_default()
 
-        return self.__get_offset_first_words_default()
+        data['text'] = data['text'].map(clean_text)
+
+        return data
 
     def __get_offset_first_words_default(self):
         '''
