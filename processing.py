@@ -21,7 +21,7 @@ class OutputFormat(Enum):
     data_frame_stripped = 3
 
 
-def process_image(image_path: str, preprocess_mode: str, language: str, debug: bool, config_name: str = None, output_format=OutputFormat.data_frame):
+def process_image(image_path: str, preprocess_mode: str, language: str, method: int, debug: bool, config_name: str = None, output_format=OutputFormat.data_frame):
     '''
     Function that handles processing of a single image
 
@@ -35,7 +35,7 @@ def process_image(image_path: str, preprocess_mode: str, language: str, debug: b
 
     # recognize content
     recognizer = TextRecognizer(
-        image_manipulator.get_image_preprocessed_filename(), language)
+        image_manipulator.get_image_preprocessed_filename(), language, method)
 
     # get recognition data
     all_words = recognizer.get_data()

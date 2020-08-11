@@ -16,9 +16,10 @@ def main():
 
     names = args['names']
     preprocess_mode = args['preprocess']
-    config_name = args['config_name']
-    debug = args['debug']
     language = args['lang']
+    method = args['method']
+    debug = args['debug']
+    config_name = args['config_name']
 
     paths_base = map('./input/{}.png'.format, names)
     paths_globbed = map(glob.glob, paths_base)
@@ -28,7 +29,8 @@ def main():
         page_index = get_page_index(image_path)
 
         processing_result = process_image(
-            image_path, preprocess_mode, language, debug, config_name)
+            image_path, preprocess_mode, language, method, debug, config_name)
+
         print("==========\nResults p.{}:\n".format(page_index))
         print(processing_result)
 

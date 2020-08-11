@@ -10,19 +10,21 @@ import pandas as pd
 class TextRecognizer:
     '''
     A class which allows to convert image object to text.
-    Allows to customize language
+    Allows to customize language and recognition method.
     '''
     image = None
     language = None
+    method = None
 
     __text = None
     __boxes = None
     __data = None
     __osd = None
 
-    def __init__(self, imagePath, language):
+    def __init__(self, imagePath: str, language: str, method: int = 1):
         self.image = Image.open(imagePath)
         self.language = language
+        self.method = method
 
     def __extract_text(self):
         '''
@@ -114,6 +116,15 @@ class TextRecognizer:
 
     def get_offset_first_words(self):
         '''
+        Extracts first word data using one of two methods.
+        '''
+        if self.method == 2:
+            return self.__get_offset_first_words_alt()
+
+        return self.__get_offset_first_words_default()
+
+    def __get_offset_first_words_default(self):
+        '''
         Extracts first word data for each offset line in image
         '''
         if self.__data is None:
@@ -134,7 +145,7 @@ class TextRecognizer:
 
         return offset_first_words.sort_index()
 
-    def get_offset_first_words_alt(self):
+    def __get_offset_first_words_alt(self):
         '''
         Extracts first word data for each offset line in image (alternative method)
 

@@ -13,6 +13,7 @@ def parse_main_arguments():
     config_name: name prefix
     preprocess: type of preprocessing
     lang: recognition language
+    method: method for dictionary word selection
     debug: whether to display debug data
     '''
     arg_parser = argparse.ArgumentParser()
@@ -28,6 +29,9 @@ def parse_main_arguments():
 
     arg_parser.add_argument("-l", "--lang", type=str, default="deu+frk",
                             help="set language of recognition")
+
+    arg_parser.add_argument("-m", "--method", type=int, default=1,
+                            help="set method for dictionary word selection")
 
     arg_parser.add_argument('--no-debug', dest='debug', action='store_false')
     arg_parser.set_defaults(debug=True)
