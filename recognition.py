@@ -137,7 +137,7 @@ class TextRecognizer:
         else:
             data = self.__get_offset_first_words_default()
 
-        data['text'] = data['text'].map(clean_text)
+        data['text'] = data['text'].map(clean_word)
 
         return data
 
