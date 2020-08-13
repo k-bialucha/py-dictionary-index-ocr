@@ -1,7 +1,7 @@
 left,top,width,height,conf,text
 270,348,234,44,91,Liebichau
 270,1207,237,43,88,Liebichau
-271,1751,235,42,89,Liebichau
+271,1751,512,42,89,"Liebichau, Alt- u. Neu-"
 274,2564,263,44,51,Lieboschütz
 275,2611,235,43,69,Liebschütz
 280,3108,243,45,79,Liebsdorf
@@ -11,16 +11,16 @@ left,top,width,height,conf,text
 1334,1224,226,44,90,Liebstein
 1337,1596,190,45,82,Liednitz
 1334,1881,190,46,73,Liegnitz
-1332,1970,214,46,53,Liepowitz
-1331,2062,194,44,90,Liepsa
+1332,1970,577,46,53,Liepowitz oder Lipowitz
+1331,2062,398,44,90,Liepsa ist Lipsa
 1330,2107,250,45,91,Liergrund
 1330,2199,137,38,75,Liesch
 1331,2285,216,44,92,Liesdorf
-1331,2332,167,35,87,Liesk
-1333,2375,196,44,90,Lieskan
+1331,2332,362,35,87,Liesk ist Lieske
+1333,2375,196,44,90,Lieskau
 1331,2510,162,45,83,Lieske
 1332,2964,302,44,65,Liesvorwerk
-1332,3056,202,43,89,Ligota
-1332,3102,188,44,91,Ligota
-1332,3194,124,40,89,Ligota
-1332,3284,191,43,91,Ligota
+1332,3056,188,43,89,Ligota
+1332,3102,870,44,91,Ligota Brinicka oder Ellguth-Brinitze
+1332,3194,257,40,89,Ligota Dislawska
+1332,3284,880,43,91,Ligota Proskowska ist Ellguth-Proskau
