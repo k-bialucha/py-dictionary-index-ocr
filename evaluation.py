@@ -13,7 +13,7 @@ FP_WEIGHT = 60
 
 # define tolerance for matches [pixels]
 X_TOL = 65
-Y_TOL = 25
+Y_TOL = 22
 
 MATCH_QUERY = 'left > {} and left < {} and top > {} and top < {}'
 
@@ -133,15 +133,16 @@ def calculate_word_similarity(word_act: str, word_ref: str) -> (float, int):
     return (similarity, distance)
 
 
-def calculate_ranking(true_pos_count: int, false_neg_count: int, false_pos_count: int, similarity_mean: float):
+def calculate_ranking(
+        true_pos_count: int, false_neg_count: int, false_pos_count: int, similarity_mean: float):
     '''
     Calculates the ranking based on TP/FN/FP count.
     '''
-    all_positives_count = true_pos_count + false_neg_count
-    adjusted_positives_count = true_pos_count * similarity_mean + false_neg_count
+    all_true_count = true_pos_count + false_neg_count
+    adjusted_true_pos_count = true_pos_count * similarity_mean
 
-    return (adjusted_positives_count * POS_WEIGHT - false_neg_count * FN_WEIGHT -
-            false_pos_count * FP_WEIGHT) / (all_positives_count)
+    return (adjusted_true_pos_count * POS_WEIGHT - false_neg_count * FN_WEIGHT -
+            false_pos_count * FP_WEIGHT) / (all_true_count)
 
 
 def create_results(true_positives, false_negatives, false_positives, name):
