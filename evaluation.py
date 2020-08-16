@@ -23,7 +23,7 @@ EMPTY_DATA_DF = pd.DataFrame(
 EMPTY_RESULTS_DF = pd.DataFrame(
     columns=['name', 'TP', 'FN', 'FP', 'perf_cases', 'sim_mean', 'ranking'])
 EMPTY__TOTAL_RESULTS_DF = pd.DataFrame(
-    columns=['name', 'preprocess', 'lang', 'method',
+    columns=['preprocess', 'lang', 'method',
              'TP', 'FN', 'FP', 'perf_cases', 'sim_mean', 'ranking'])
 
 
@@ -202,6 +202,7 @@ def add_to_evaluation_summary(results_dict: dict, config_name: str):
 
     filename = "./results/_evaluation_summary/{}.csv".format(
         results['name'])
+    results.pop('name', None)
 
     evaluation_summary_exists = path.isfile(filename)
 
@@ -212,7 +213,7 @@ def add_to_evaluation_summary(results_dict: dict, config_name: str):
 
     evaluation_summary.loc[len(evaluation_summary)] = results
     evaluation_summary = evaluation_summary.sort_values(
-        ['ranking', 'sim_mean', 'perf_cases'])
+        ['ranking', 'sim_mean', 'perf_cases'], ascending=False)
 
     evaluation_summary['ranking'] = evaluation_summary['ranking'].map(
         lambda x: round(x, 3))
