@@ -1,6 +1,7 @@
 '''
 Main module for app's performance evaluation.
 '''
+from os import path
 from statistics import mean
 import pandas as pd
 
@@ -21,6 +22,9 @@ EMPTY_DATA_DF = pd.DataFrame(
     columns=['left', 'top', 'width', 'height', 'conf', 'text'])
 EMPTY_RESULTS_DF = pd.DataFrame(
     columns=['name', 'TP', 'FN', 'FP', 'perf_cases', 'sim_mean', 'ranking'])
+EMPTY__TOTAL_RESULTS_DF = pd.DataFrame(
+    columns=['name', 'preprocess', 'lang', 'method',
+             'TP', 'FN', 'FP', 'perf_cases', 'sim_mean', 'ranking'])
 
 
 def compare(actual_data, reference_data):
@@ -223,6 +227,8 @@ def evaluate_page(base_name: str, debug: bool, config_name: str):
 
     print_results(results)
 
+    add_to_evaluation_summary(results, config_name)
+
     return (true_positives, false_negatives, false_positives, results)
 
 
@@ -259,6 +265,35 @@ def evaluate_all():
     print_results(total_results)
     results_df.to_csv(
         './results/{}/evaluation.csv'.format(config_name), index=False)
+
+    add_to_evaluation_summary(total_results, config_name)
+
+
+def add_to_evaluation_summary(results_dict: dict, config_name: str):
+    '''
+    Updates the evaluation summary CSV file with results.
+    '''
+    results = results_dict.copy()
+    (preprocess, lang, method) = config_name.split('__')
+
+    results['preprocess'] = preprocess
+    results['lang'] = lang
+    results['method'] = method
+
+    filename = "./results/_evaluation_summary/{}.csv".format(
+        results['name'])
+
+    evaluation_summary_exists = path.isfile(filename)
+
+    if evaluation_summary_exists:
+        evaluation_summary = pd.read_csv(filename)
+    else:
+        evaluation_summary = EMPTY__TOTAL_RESULTS_DF.copy()
+
+    evaluation_summary.loc[len(evaluation_summary)] = results
+    evaluation_summary.sort_values(['ranking', 'sim_mean', 'perf_cases'])
+
+    evaluation_summary.to_csv(filename, index=False)
 
 
 if __name__ == "__main__":
