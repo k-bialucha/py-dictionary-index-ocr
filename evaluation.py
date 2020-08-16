@@ -182,8 +182,44 @@ def print_results(results):
     if results['name'] is not None:
         print('\n{}'.format(results['name']))
 
-    print('[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} | sim mean: {:5.3f} | perf cases: {:3} ]'.format(
-        results['TP'], results['FN'], results['FP'], results['ranking'], results['sim_mean'], results['perf_cases']))
+    line = '[ TP: {:3} | FN: {:3} | FP: {:3} | ranking: {:6.3f} ' \
+        ' | sim mean: {:5.3f} | perf cases: {:3} ]'
+
+    print(line.format(results['TP'], results['FN'], results['FP'],
+                      results['ranking'], results['sim_mean'], results['perf_cases']))
+
+
+def add_to_evaluation_summary(results_dict: dict, config_name: str):
+    '''
+    Updates the evaluation summary CSV file with results.
+    '''
+    results = results_dict.copy()
+    (preprocess, lang, method) = config_name.split('__')
+
+    results['preprocess'] = preprocess
+    results['lang'] = lang
+    results['method'] = method
+
+    filename = "./results/_evaluation_summary/{}.csv".format(
+        results['name'])
+
+    evaluation_summary_exists = path.isfile(filename)
+
+    if evaluation_summary_exists:
+        evaluation_summary = pd.read_csv(filename)
+    else:
+        evaluation_summary = EMPTY__TOTAL_RESULTS_DF.copy()
+
+    evaluation_summary.loc[len(evaluation_summary)] = results
+    evaluation_summary = evaluation_summary.sort_values(
+        ['ranking', 'sim_mean', 'perf_cases'])
+
+    evaluation_summary['ranking'] = evaluation_summary['ranking'].map(
+        lambda x: round(x, 3))
+    evaluation_summary['sim_mean'] = evaluation_summary['sim_mean'].map(
+        lambda x: round(x, 3))
+
+    evaluation_summary.to_csv(filename, index=False)
 
 
 def evaluate_page(base_name: str, debug: bool, config_name: str):
@@ -267,33 +303,6 @@ def evaluate_all():
         './results/{}/evaluation.csv'.format(config_name), index=False)
 
     add_to_evaluation_summary(total_results, config_name)
-
-
-def add_to_evaluation_summary(results_dict: dict, config_name: str):
-    '''
-    Updates the evaluation summary CSV file with results.
-    '''
-    results = results_dict.copy()
-    (preprocess, lang, method) = config_name.split('__')
-
-    results['preprocess'] = preprocess
-    results['lang'] = lang
-    results['method'] = method
-
-    filename = "./results/_evaluation_summary/{}.csv".format(
-        results['name'])
-
-    evaluation_summary_exists = path.isfile(filename)
-
-    if evaluation_summary_exists:
-        evaluation_summary = pd.read_csv(filename)
-    else:
-        evaluation_summary = EMPTY__TOTAL_RESULTS_DF.copy()
-
-    evaluation_summary.loc[len(evaluation_summary)] = results
-    evaluation_summary.sort_values(['ranking', 'sim_mean', 'perf_cases'])
-
-    evaluation_summary.to_csv(filename, index=False)
 
 
 if __name__ == "__main__":
