@@ -16,9 +16,9 @@ left,top,width,height,conf,text
 1339,396,139,33,83,Vconar
 1340,486,150,34,40,Vdanyn
 1340,576,168,35,58,Vegbütel
-1337,664,136,41,34,Veiovo
+1337,664,136,41,34,Veiouo
 1330,706,387,44,82,Verlorenwasser
-1336,1468,341,38,74,Verlorne Post
+1336,1468,439,38,74,"Verlorne Post, die,"
 1336,1557,192,44,71,Verona
 1335,1647,437,43,48,Versail oder Fährsaal
 1335,1737,313,46,89,Vettermühle
@@ -31,4 +31,4 @@ left,top,width,height,conf,text
 1330,2375,172,44,93,Victor
 1331,2475,392,46,91,Victorkretscham
 1335,2576,374,43,73,Viedweidmühle
-1335,2676,188,43,41,Vichau
+1335,2676,188,43,41,Viehau
