@@ -1,10 +1,10 @@
 preprocess,lang,method,TP,FN,FP,perf_cases,sim_mean,ranking
 blur,frk+deu+pol,1,25,1,0,12,0.82,75.0
-blur,frk,1,26,0,0,6,0.741,74.1
+blur,frk,1,26,0,0,6,0.74,74.0
 blur,pol+deu+frk,1,25,1,0,11,0.806,73.654
 blur,frk+deu,1,25,1,0,10,0.798,72.885
-blur,deu,1,25,1,0,6,0.746,67.885
-blur,pol,1,26,0,0,5,0.674,67.4
+blur,deu,1,25,1,0,6,0.745,67.788
+blur,pol,1,26,0,0,5,0.673,67.3
 blur,frk,2,21,5,1,5,0.705,35.404
 blur,frk+deu+pol,2,20,6,1,8,0.782,34.769
 blur,frk+deu,2,20,6,1,8,0.777,34.385
