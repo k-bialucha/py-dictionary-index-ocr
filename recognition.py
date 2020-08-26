@@ -43,6 +43,40 @@ def normalize_ocr_mistakes(word: str):
     return normalized_word
 
 
+SECOND_PART_KEYWORDS = list(['ist', 'oder', 'nieder'])
+
+
+def find_word_merging_index(word_list: list):
+    '''
+    Takes a list of next words and looks for merging index
+    '''
+    first_comma_index = None
+    second_comma_index = None
+
+    word_list = list(map(lambda x: x.lower(), word_list))
+    word_list = list(map(normalize_ocr_mistakes, word_list))
+
+    for i, word in enumerate(word_list):
+        if len(word) > 0 and word[-1] == ',':
+            if first_comma_index is not None and second_comma_index is None:
+                second_comma_index = i
+            if first_comma_index is None:
+                first_comma_index = i
+
+    if first_comma_index is None and second_comma_index is None:
+        return 0
+
+    if second_comma_index is None:
+        return first_comma_index
+
+    second_part_words = word_list[(first_comma_index+1):(second_comma_index+1)]
+
+    if any(x in SECOND_PART_KEYWORDS for x in second_part_words):
+        return second_comma_index
+
+    return first_comma_index
+
+
 class TextRecognizer:
     '''
     A class which allows to convert image object to text.
