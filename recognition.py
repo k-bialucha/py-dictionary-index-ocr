@@ -7,18 +7,23 @@ from PIL import Image
 import pandas as pd
 
 
-def clean_word(word: str):
+def normalize_word(word: str):
     '''
-    Takes recognized word and cleans trailing comma sign if exists.
+    Takes recognized word and cleans it.
+    Removes trailing comma sign if exists
+    and replaces long "s" to short "s" (for Fraktur)
     '''
     if not isinstance(word, str):
         return word
 
-    if word[-1] == ',':
-        cleaned_word = word[0:-1]
-        return cleaned_word
+    normalized_word = word
 
-    return word
+    if normalized_word[-1] == ',':
+        normalized_word = normalized_word[0:-1]
+
+    normalized_word = normalized_word.replace('ſ', 's')
+
+    return normalized_word
 
 
 class TextRecognizer:
@@ -137,7 +142,7 @@ class TextRecognizer:
         else:
             data = self.__get_offset_first_words_default()
 
-        data['text'] = data['text'].map(clean_word)
+        data['text'] = data['text'].map(normalize_word)
 
         return data
 
