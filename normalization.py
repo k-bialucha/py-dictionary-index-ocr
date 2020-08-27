@@ -35,7 +35,7 @@ def normalize_ocr_mistakes(word: str):
     normalized_word = word
 
     if ' ift ' in normalized_word:
-        return normalized_word.replace(' ift ', ' ist ')
+        normalized_word = normalized_word.replace(' ift ', ' ist ')
 
     normalized_word = normalized_word.replace('ſ', 's')
 

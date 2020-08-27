@@ -44,6 +44,24 @@ def find_word_merging_index(word_list: list):
     return first_comma_index
 
 
+def merge_words(words: pd.DataFrame):
+    '''
+    Takes a several base words
+    and merges them into one dictionary word object.
+    '''
+    base_word = dict()
+
+    for idx, (_, next_row) in enumerate(words.iterrows()):
+        if (idx == 0):
+            base_word = next_row
+
+        if idx > 0 and isinstance(next_row['text'], str):
+            base_word['text'] = base_word['text'] + ' ' + next_row['text']
+            base_word['width'] = base_word['width'] + next_row['width']
+
+    return base_word
+
+
 class TextRecognizer:
     '''
     A class which allows to convert image object to text.
@@ -183,6 +201,25 @@ class TextRecognizer:
 
         offset_first_words = top_block_words.query(
             'text.str.len() > 2 and word_num == 1')
+
+        # look for complex dictionary words and normalize
+        for original_index, _ in offset_first_words.iterrows():
+            next_words = self.__data['text'][original_index:(
+                original_index + 5)].to_list()
+
+            word_merging_index = find_word_merging_index(next_words)
+
+            start_index = original_index
+            end_index = original_index + word_merging_index + 1
+
+            words_to_merge = self.__data.iloc[start_index:end_index]
+            merged_word = merge_words(words_to_merge)
+
+            enhanced_word = merged_word
+            enhanced_word['text'] = normalize_ocr_mistakes(merged_word['text'])
+
+            if word_merging_index > 0:
+                offset_first_words.loc[original_index] = enhanced_word
 
         return offset_first_words.sort_index()
 
