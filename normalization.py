@@ -29,10 +29,13 @@ def normalize_ocr_mistakes(word: str):
     if not isinstance(word, str):
         return ''
 
-    if 'ift' in word:
+    if word == 'ift':
         return 'ist'
 
     normalized_word = word
+
+    if ' ift ' in normalized_word:
+        return normalized_word.replace(' ift ', ' ist ')
 
     normalized_word = normalized_word.replace('ſ', 's')
 

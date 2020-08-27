@@ -19,7 +19,8 @@ def find_word_merging_index(word_list: list):
     first_comma_index = None
     second_comma_index = None
 
-    word_list = list(map(lambda x: x.lower(), word_list))
+    word_list = list(
+        map(lambda x: x.lower() if isinstance(x, str) else '', word_list))
     word_list = list(map(normalize_ocr_mistakes, word_list))
 
     for i, word in enumerate(word_list):
