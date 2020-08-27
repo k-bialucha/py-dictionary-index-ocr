@@ -1,7 +1,7 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
 5,1,2,2,1,1,270,348,234,44,5,Siebicdhau
 5,1,2,5,1,1,270,1207,237,43,20,Liebichan
-5,1,2,6,1,1,271,1664,85,34,92,Der
+5,1,2,6,1,1,271,1664,409,34,92,Der Hoppe-Hiibel
 5,1,2,7,1,1,271,1751,235,42,56,$iebichau
 5,1,2,9,1,1,274,2338,322,46,41,Ghriftinenhof
 5,1,2,11,1,1,274,2564,263,44,29,icbofchiik
@@ -12,16 +12,16 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,5,2,1,1,1334,1224,226,44,52,Piebftcin
 5,1,5,3,1,1,1337,1596,190,45,0,Ticdnit
 5,1,5,4,1,1,1334,1881,190,46,24,Pieguitz
-5,1,5,5,1,1,1332,1970,214,46,25,Tiepowit
-5,1,5,6,1,1,1331,2062,194,44,85,Liepsa
+5,1,5,5,1,1,1332,1970,446,46,25,Tiepowit odber Lipowik
+5,1,5,6,1,1,1331,2062,333,44,85,Liepsa ist ?ipfa
 5,1,5,7,1,1,1330,2107,250,45,42,Qierąrund
 5,1,5,8,1,1,1330,2199,137,38,78,Jiiesch
 5,1,5,9,1,1,1331,2285,216,44,0,KieSdorf
-5,1,5,10,1,1,1331,2332,167,35,55,Ljeslk
+5,1,5,10,1,1,1331,2332,318,35,55,Ljeslk ist tieste
 5,1,5,11,1,1,1333,2375,196,44,81,$iestan
 5,1,5,12,1,1,1331,2510,162,45,23,Kieste
 5,1,5,13,1,1,1332,2964,302,44,3,Piesoorwert
 5,1,5,14,1,1,1332,3056,202,43,81,Ligota
-5,1,5,15,1,1,1332,3102,188,44,73,Ligota
-5,1,5,16,1,1,1332,3194,124,40,88,Ligolu
+5,1,5,15,1,1,1332,3102,829,44,73,Ligota Brinicka ober Sllguth-Brinige
+5,1,5,16,1,1,1332,3194,704,40,88,"Ligolu Dislawska, ist Gllguth:Diftelwig"
 5,1,5,17,1,1,1332,3284,191,43,87,Ligota

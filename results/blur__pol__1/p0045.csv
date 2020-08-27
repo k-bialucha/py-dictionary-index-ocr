@@ -1,6 +1,6 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
 5,1,2,1,1,1,273,262,316,42,47,WBWaumgarten
-5,1,2,2,1,1,270,1022,207,42,72,Solgenau
+5,1,2,2,1,1,270,1022,628,42,72,Solgenau ober bie Folgebhdaufer
 5,1,2,3,1,1,269,1107,286,44,10,WJaunmedorf
 5,1,2,4,1,1,269,1198,497,42,33,Baunast
 5,1,2,5,1,1,270,1511,265,44,51,BPaufdhwik
@@ -24,9 +24,9 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,5,15,1,1,1331,1816,297,43,9,Weateniwvald
 5,1,5,16,1,1,1326,1951,195,44,4,Wcatich
 5,1,5,17,1,1,1327,2041,185,44,71,WBechau
-5,1,5,18,1,1,1327,2402,81,34,83,Die
+5,1,5,18,1,1,1327,2402,347,34,83,Die GutEmiihie
 5,1,5,19,1,1,1327,2451,154,35,32,Bechor
-5,1,5,20,1,1,1328,2495,174,35,92,Bechowo
+5,1,5,20,1,1,1328,2495,362,35,92,"Bechowo, ist Beidhau"
 5,1,5,21,1,1,1322,2533,322,53,40,Wedenmiihle
 5,1,5,22,1,1,1327,2624,201,42,48,Wederu
 5,1,5,23,1,1,1325,3118,209,42,21,BecFeru

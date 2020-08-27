@@ -4,7 +4,7 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,4,1,1,288,909,100,42,56,Unth.
 5,1,2,5,1,1,281,1495,101,41,89,Anth.
 5,1,2,7,1,1,292,1919,276,75,0,PBfarfendorf
-5,1,2,8,1,1,251,2034,42,42,86,oft
+5,1,2,8,1,1,251,2034,258,42,86,oft Krft. Könige
 5,1,2,9,1,1,284,2572,284,45,0,Kfaffendorf
 5,1,4,2,1,1,1330,412,254,43,59,Feldhäufer
 5,1,4,4,1,1,1330,679,332,46,71,Pfaffeumühle
@@ -13,8 +13,8 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,4,7,1,1,1330,1086,268,44,0,Yrarräcker
 5,1,4,8,1,1,1331,1310,297,45,40,Prarrmühle
 5,1,4,9,1,1,1332,1400,291,46,50,Vfarroggen
-5,1,4,10,1,1,1338,1710,206,56,85,Pfeilgut
-5,1,4,11,1,1,1340,1805,134,43,39,Pfeil:
+5,1,4,10,1,1,1338,1710,453,56,85,"Pfeilgut, oder Kieberhof"
+5,1,4,11,1,1,1340,1805,420,43,39,Pfeil: oder Geiermühle
 5,1,4,12,1,1,1336,1895,336,44,64,Plaumendorf
 5,1,4,13,1,1,1332,2294,372,89,58,»bilippinenhof
 5,1,4,14,1,1,1332,2388,287,47,75,Philippolis

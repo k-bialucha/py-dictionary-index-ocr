@@ -1,6 +1,6 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
 5,1,2,1,1,1,273,262,316,42,66,Waumgarten
-5,1,2,2,1,1,270,1022,207,42,37,Solgenauw
+5,1,2,2,1,1,270,1022,628,42,37,Solgenauw ober bie Folgehdufer
 5,1,2,3,1,1,269,1107,286,45,21,Waunódorf
 5,1,2,4,1,1,269,1198,497,42,12,WBaunast
 5,1,2,5,1,1,270,1511,266,44,16,WPaufchwik
@@ -22,11 +22,11 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,4,12,1,1,1330,1596,160,42,88,Weata
 5,1,4,13,1,1,1331,1639,263,43,42,WBeatenbhof
 5,1,4,14,1,1,1332,1727,286,44,58,Weatcnthal
-5,1,4,15,1,1,1331,1816,297,43,20,Beateniwald
+5,1,4,15,1,1,1331,1816,627,43,20,"Beateniwald, oder Hummelbufch"
 5,1,4,16,1,1,1326,1951,195,44,47,Beatidy
 5,1,4,17,1,1,1327,2040,185,45,80,Bechau
-5,1,4,18,1,1,1327,2402,81,34,91,Die
+5,1,4,18,1,1,1327,2402,347,34,91,Die Gudmithie
 5,1,4,19,1,1,1327,2451,154,35,27,Bechow
-5,1,4,20,1,1,1327,2495,175,35,71,Bechowo
+5,1,4,20,1,1,1327,2495,363,35,71,"Bechowo, ist Beidhau"
 5,1,4,22,1,1,1327,2624,201,43,0,Beclern
 5,1,4,23,1,1,1325,3118,209,42,49,%c&etn

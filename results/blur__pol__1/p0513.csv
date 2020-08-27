@@ -4,7 +4,7 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,4,1,1,288,909,100,42,43,nth.
 5,1,2,5,1,1,281,1495,101,41,30,Anth.
 5,1,2,7,1,1,284,1940,285,46,57,%faffmbvrf
-5,1,2,8,1,1,251,2034,42,42,72,oft
+5,1,2,8,1,1,251,2034,574,42,72,oft Krft. Kónigl. Nent:X. Striegau
 5,1,2,9,1,1,284,2572,284,45,0,Yraffendorf
 5,1,4,2,1,1,1330,412,254,43,34,Selbhdufer
 5,1,4,4,1,1,1330,679,332,46,0,Pfaffeumiihie
@@ -14,7 +14,7 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,4,8,1,1,1331,1310,297,45,0,Rfarrmiible
 5,1,4,9,1,1,1332,1400,291,46,0,Pfarrogącu
 5,1,4,10,1,1,1352,1710,182,56,15,Ppfeilgut
-5,1,4,11,1,1,1340,1805,134,43,0,Jfeil:
+5,1,4,11,1,1,1340,1805,420,43,0,Jfeil: ober Geiermiihie
 5,1,4,12,1,1,1336,1895,336,44,14,ilaumendorf
 5,1,4,13,1,1,1332,2298,372,46,55,%bth;›;›menbof
 5,1,4,14,1,1,1332,2388,287,47,3,Philippolis

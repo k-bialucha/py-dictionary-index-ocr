@@ -1,5 +1,5 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
-5,1,2,1,1,1,284,267,159,37,88,Flaki
+5,1,2,1,1,1,284,267,338,37,88,Flaki ifi Slalten
 5,1,2,2,1,1,284,356,198,50,0,Sslegelei
 5,1,2,5,1,1,287,675,230,37,92,Fieischoern
 5,1,2,6,1,1,288,807,261,41,0,Flemigisdorff
@@ -10,21 +10,21 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,13,1,1,297,1570,301,51,60,Florensdorf
 5,1,2,14,1,1,299,1595,262,110,39,Slorentine
 5,1,2,15,1,1,300,1708,198,50,68,Florian
-5,1,2,17,1,1,299,1798,182,50,41,Florian
-5,1,2,19,1,1,309,2630,290,52,38,Slorianshof
+5,1,2,17,1,1,299,1798,475,50,41,Florian oder Slorianshof
+5,1,2,19,1,1,309,2630,508,52,38,Slorianshof ober Florian
 5,1,2,20,1,1,293,2728,260,66,24,‚Florspors
-5,1,7,1,4,1,1353,388,275,46,65,luchthäufer
-5,1,7,2,1,1,1330,478,301,48,52,Fluchtbäufer
+5,1,7,1,4,1,1353,388,601,46,65,luchthäufer oder die Neuhäufer
+5,1,7,2,1,1,1330,478,641,48,52,Fluchtbäufer oder Kapellendörfel
 5,1,7,3,1,1,1331,572,236,39,73,Fochswinkil
 5,1,7,4,1,1,1332,613,227,49,31,Körftchen
 5,1,7,7,1,1,1338,1202,220,48,69,Förfterei
 5,1,7,8,1,1,1339,1429,211,46,43,Forfigen
-5,1,7,9,1,1,1347,2466,308,42,0,"Fogelyesang,\.h."
+5,1,7,9,1,1,1347,2466,635,42,0,"Fogelyesang,\.h. 1370Bogelgefang"
 5,1,7,10,1,1,1344,2516,219,37,17,Foygelsdorff
 5,1,7,11,1,1,1349,2561,222,37,44,Foyeisdorff
-5,1,7,13,1,1,1351,2647,129,48,28,Folge
-5,1,7,14,1,1,1357,2737,284,49,79,Folgehäufer
+5,1,7,13,1,1,1351,2647,424,48,28,Folge oder Kotgehäufer
+5,1,7,14,1,1,1357,2737,531,49,79,Folgehäufer oder Folgenau
 5,1,7,15,1,1,1358,2827,286,49,76,Folgemühle
-5,1,7,16,1,1,1358,2919,218,47,76,Folgenan
+5,1,7,16,1,1,1358,2919,508,47,76,Folgenan oder Rolgehäufer
 5,1,7,17,1,1,1358,3008,323,49,72,Folgenhänfer
-5,1,7,18,1,1,1357,3098,310,49,57,Follmersporf
+5,1,7,18,1,1,1357,3098,604,49,57,Follmersporf (von Waldemar)

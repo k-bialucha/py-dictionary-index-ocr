@@ -1,14 +1,14 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
-5,1,4,1,1,1,294,651,231,39,87,Zabkew
+5,1,4,1,1,1,294,651,415,39,87,Zabkew ist Zabkow
 5,1,4,2,1,1,295,762,133,36,85,Zublat
 5,1,4,3,1,1,294,853,156,38,84,Zabloto
 5,1,4,4,1,1,293,937,185,46,79,Zabnig
-5,1,4,5,1,1,292,1039,216,35,84,Zahnek
+5,1,4,5,1,1,292,1039,401,35,84,Zahnek ist Ziobnig
 5,1,4,6,1,1,294,1089,120,39,88,Zabor
 5,1,4,7,1,1,292,1141,248,41,27,Zeahboree
 5,1,4,8,1,1,293,1548,227,41,66,sporemba
 5,1,4,9,1,1,292,1603,214,42,74,Zahrze
-5,1,4,10,1,1,295,2460,215,32,91,Gwozdek
+5,1,4,10,1,1,295,2460,626,32,91,Gwozdek oder Hammerfretfham
 5,1,4,11,1,1,295,2559,213,43,81,Zahrze
 5,1,4,12,1,1,296,2650,218,41,82,Zahrze
 5,1,4,13,1,1,295,3102,174,41,91,Zabrze
@@ -19,7 +19,7 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,6,9,1,1,1342,1613,258,38,40,Zuchaniswitr
 5,1,6,10,1,1,1340,1699,306,47,85,Zacharzowiß
 5,1,6,11,1,1,1337,2152,297,41,75,Zachciala
-5,1,6,12,1,1,1338,2292,147,36,81,Zuchery
+5,1,6,12,1,1,1338,2292,443,36,81,Zuchery audy Oppirschicz
 5,1,6,13,1,1,1342,2379,168,38,65,Zucheris
 5,1,6,14,1,1,1343,2469,250,31,91,Zuchinkirche.
 5,1,6,15,1,1,1347,2607,161,36,88,Zuchror

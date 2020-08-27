@@ -2,7 +2,7 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,2,1,1,279,455,292,45,22,Bfaffendorf
 5,1,2,3,1,1,287,770,350,48,65,Pfarfendorf
 5,1,2,4,1,1,287,909,102,43,49,Unth.
-5,1,2,5,1,1,282,1469,87,72,50,Anth.
+5,1,2,5,1,1,282,1469,325,72,50,Anth. b) u. ce) Königl
 5,1,2,7,1,1,284,1940,285,46,14,Hfaffendorf
 5,1,2,8,1,1,284,2572,285,45,0,Hfaffendorf
 5,1,4,2,1,1,1330,412,254,43,77,Feldhäufer
@@ -13,8 +13,8 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,4,7,4,1,1326,1224,59,33,3,das
 5,1,4,8,1,1,1331,1310,297,46,24,KHfarrmühle
 5,1,4,9,1,1,1332,1400,291,47,70,Pfarroggen
-5,1,4,10,1,1,1338,1714,209,48,0,feilgnt
-5,1,4,11,1,1,1340,1805,134,43,42,Pfeil:
+5,1,4,10,1,1,1338,1714,462,48,0,"feilgnt, oder Niederhof"
+5,1,4,11,1,1,1340,1805,420,43,42,Pfeil: oder Geiermühle
 5,1,4,12,1,1,1336,1895,336,44,28,Pflaumendorf
 5,1,4,14,1,1,1332,2388,287,55,86,Philippolis
 5,1,4,15,1,1,1336,2479,323,46,31,Philippsporf

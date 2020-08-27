@@ -1,5 +1,5 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
-5,1,2,1,1,1,284,267,159,37,31,Flalki
+5,1,2,1,1,1,284,267,338,37,31,Flalki ifi Stałfen
 5,1,2,2,1,1,284,356,198,50,11,Glegelei
 5,1,2,5,1,1,287,675,230,37,91,Fieischoern
 5,1,2,6,1,1,288,807,261,41,46,Hlemigisdorff
@@ -10,11 +10,11 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,13,1,1,297,1570,301,51,43,Slorensdorf
 5,1,2,14,1,1,299,1600,264,101,46,Śzloreutine
 5,1,2,15,1,1,300,1708,198,50,50,%loriau
-5,1,2,17,1,1,299,1798,182,50,12,Glorian
-5,1,2,19,1,1,309,2630,290,52,70,Glorianshof
+5,1,2,17,1,1,299,1798,475,50,12,Glorian oder Florianshof
+5,1,2,19,1,1,309,2630,508,52,70,Glorianshof ober $lorian
 5,1,2,20,1,1,293,2732,266,58,48,„S;-I_orśborf
-5,1,7,1,4,1,1353,388,275,46,0,luchthdufer
-5,1,7,2,1,1,1330,478,301,48,14,Rluchthanfer
+5,1,7,1,4,1,1353,388,601,46,0,luchthdufer oder bie Neuhdufer
+5,1,7,2,1,1,1330,478,641,48,14,Rluchthanfer ober Kapellendórfel
 5,1,7,3,1,1,1331,572,236,39,45,Fochswinkił
 5,1,7,4,1,1,1332,613,227,49,18,Sorftehen
 5,1,7,7,1,1,1338,1202,220,48,0,Wwórfterei
@@ -23,9 +23,9 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,7,10,1,1,1344,2516,219,37,68,Fogelsdorff
 5,1,7,11,1,1,1349,2561,222,37,29,Fogeisdorff
 5,1,7,12,1,1,1349,2603,210,91,46,Ęohlung
-5,1,7,13,1,1,1351,2647,129,48,0,Svląe
-5,1,7,14,1,1,1357,2737,284,49,12,%olachinfer
+5,1,7,13,1,1,1351,2647,424,48,0,Svląe oder Folgehdufer
+5,1,7,14,1,1,1357,2737,531,49,12,%olachinfer odber Folgenau
 5,1,7,15,1,1,1358,2827,286,49,30,Golgemiihie
-5,1,7,16,1,1,1358,2919,218,47,22,Rolgenau
+5,1,7,16,1,1,1358,2919,508,47,22,Rolgenau odber Folgehdujer
 5,1,7,17,1,1,1358,3008,323,49,0,WGolgenhaufer
-5,1,7,18,1,1,1357,3098,310,49,10,Kvllmerdovef
+5,1,7,18,1,1,1357,3098,604,49,10,Kvllmerdovef (von Walbemar)
