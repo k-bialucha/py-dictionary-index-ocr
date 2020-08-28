@@ -5,11 +5,24 @@ in the TextRecognizer class.
 import pytesseract
 from PIL import Image
 import pandas as pd
+from evaluation import calculate_levenshtein_distance
 
 from normalization import normalize_word, normalize_ocr_mistakes
 
 
-SECOND_PART_KEYWORDS = list(['ist', 'oder', 'nieder'])
+SECOND_PART_KEYWORDS = list(
+    ['ist', 'oder', 'ober-', 'nieder-', 'alt-', 'neu-', 'hoch-'])
+
+
+def __is_in_second_part_keywords(word_list: list):
+    for keyword in SECOND_PART_KEYWORDS:
+        for word in word_list:
+            distance = calculate_levenshtein_distance(
+                word.lower(), keyword.lower())
+            if distance <= 1:
+                return True
+
+    return False
 
 
 def find_word_merging_index(word_list: list):
@@ -38,7 +51,7 @@ def find_word_merging_index(word_list: list):
 
     second_part_words = word_list[(first_comma_index+1):(second_comma_index+1)]
 
-    if any(x in SECOND_PART_KEYWORDS for x in second_part_words):
+    if __is_in_second_part_keywords(second_part_words):
         return second_comma_index
 
     return first_comma_index
