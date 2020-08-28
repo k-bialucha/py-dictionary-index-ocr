@@ -8,12 +8,12 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,3,7,1,252,3199,193,43,95,Rosenberg
 5,1,2,3,10,1,253,3336,195,44,48,Rosenberg.
 5,1,4,2,1,1,1326,348,375,48,90,Eisenhardsdorf
-5,1,4,3,1,1,1327,392,481,51,48,Eifenhüttenvorwerk
+5,1,4,3,1,1,1327,392,827,51,48,"Eifenhüttenvorwerk, Ober - Leschuer"
 5,1,4,4,1,1,1330,537,176,36,88,Eisenhut
 5,1,4,5,1,1,1330,625,284,38,75,Eisenrichsdors
 5,1,4,6,1,1,1332,666,280,46,69,Eisermühle
 5,1,4,7,1,1,1334,755,256,47,35,Eifersdorf
-5,1,4,14,1,1,1356,3008,259,49,66,Eisers8dorf
+5,1,4,14,1,1,1356,3008,449,49,66,"Eisers8dorf, Nieder-"
 5,1,4,15,1,1,1352,3104,224,34,89,Ekardi villa
 5,1,4,16,1,1,1352,3147,328,38,49,Eikkebrechsheyde
 5,1,4,17,1,1,1355,3240,273,36,67,Ekkhardsdorff

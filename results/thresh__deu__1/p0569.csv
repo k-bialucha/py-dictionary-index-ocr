@@ -1,5 +1,5 @@
 level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,text
-5,1,2,8,1,1,274,1669,293,46,21,Neuendorf
+5,1,2,8,1,1,274,1669,661,46,21,"Neuendorf, Ober: u. Nieder:"
 5,1,2,8,3,1,287,1763,69,37,0, M.
 5,1,7,1,1,1,1309,1884,217,25,85,en. Ribnich
 5,1,7,1,2,1,1323,1919,158,41,91,Ribnich
@@ -13,4 +13,4 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,7,1,20,1,1318,2729,315,46,0,Nichterödorf
 5,1,7,1,29,1,1319,3135,405,49,0,Nichthofenshöhe
 5,1,7,1,31,1,1308,3190,134,87,21,Rlcain
-5,1,7,1,32,1,1318,3273,233,43,56,Kidultau
+5,1,7,1,32,1,1318,3273,599,43,56,"Kidultau, Nieder: u. Öber:"

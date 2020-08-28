@@ -2,7 +2,7 @@ level,page_num,block_num,par_num,line_num,word_num,left,top,width,height,conf,te
 5,1,2,2,1,1,310,2475,325,46,70,Eifenhammer
 5,1,2,3,1,1,313,2927,328,44,36,Eifenhbammer
 5,1,4,2,1,1,1326,348,375,48,76,Eifenhardsdorf
-5,1,4,3,1,1,1327,392,481,50,12,Eifenhüttenvorwert
+5,1,4,3,1,1,1327,392,825,50,12,"Eifenhüttenvorwert, Ober = Lejchuer"
 5,1,4,4,1,1,1330,537,176,34,91,Eisenhut
 5,1,4,5,1,1,1330,625,283,37,92,Eisenrichsdorf
 5,1,4,6,1,1,1332,666,280,46,88,Eifermühle
